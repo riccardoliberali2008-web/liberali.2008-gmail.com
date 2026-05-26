@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Maturità 2026 — Guida Completa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;900&family=Sora:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #07080d;
+  --surface: #0d0f1a;
+  --surface2: #141728;
+  --border: rgba(255,255,255,0.06);
+  --text: #e8ecff;
+  --muted: rgba(232,236,255,0.4);
+  --diritto: #4f8ef7;
+  --diritto-dim: rgba(79,142,247,0.12);
+  --italiano: #e8607a;
+  --italiano-dim: rgba(232,96,122,0.12);
+  --storia: #f5a623;
+  --storia-dim: rgba(245,166,35,0.12);
+  --accent: #7c6af0;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Sora', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.5;
+}
+
+/* GRID BG */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* GLOW ORBS */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbFloat 8s ease-in-out infinite;
+}
+.orb-1 { width: 500px; height: 500px; background: rgba(79,142,247,0.08); top: -100px; left: -150px; animation-delay: 0s; }
+.orb-2 { width: 400px; height: 400px; background: rgba(232,96,122,0.07); top: 40%; right: -100px; animation-delay: 3s; }
+.orb-3 { width: 350px; height: 350px; background: rgba(124,106,240,0.08); bottom: -80px; left: 30%; animation-delay: 5s; }
+
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+
+/* MAIN LAYOUT */
+.page { position: relative; z-index: 1; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  text-align: center;
+  position: relative;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(124,106,240,0.15);
+  border: 1px solid rgba(124,106,240,0.3);
+  border-radius: 100px;
+  padding: 6px 16px 6px 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: #a89df5;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  animation: fadeIn 0.8s ease both;
+}
+.hero-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #7c6af0;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+.hero-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(2.8rem, 8vw, 6.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+  animation: fadeUp 0.9s 0.1s ease both;
+}
+.hero-title .y {
+  display: inline-block;
+  background: linear-gradient(135deg, #7c6af0, #4f8ef7, #e8607a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-year {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(5rem, 18vw, 14rem);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+  background: linear-gradient(180deg, rgba(232,236,255,0.08) 0%, rgba(232,236,255,0.02) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 32px;
+  animation: fadeUp 0.9s 0.2s ease both;
+  position: relative;
+  display: block;
+}
+.hero-year::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(79,142,247,0.15), rgba(232,96,122,0.12), rgba(245,166,35,0.15));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: blur(20px);
+  z-index: -1;
+}
+
+.hero-sub {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: var(--muted);
+  max-width: 480px;
+  line-height: 1.7;
+  margin-bottom: 48px;
+  animation: fadeUp 0.9s 0.3s ease both;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  color: #07080d;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 16px 32px;
+  border-radius: 4px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: fadeUp 0.9s 0.4s ease both;
+  box-shadow: 0 0 0 0 rgba(255,255,255,0.2);
+}
+.hero-cta:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(255,255,255,0.15);
+}
+.hero-cta-arrow { font-size: 1.1rem; transition: transform 0.3s ease; }
+.hero-cta:hover .hero-cta-arrow { transform: translateX(4px); }
+
+.hero-stats {
+  display: flex;
+  gap: 40px;
+  margin-top: 64px;
+  animation: fadeUp 0.9s 0.5s ease both;
+}
+.hero-stat { text-align: center; }
+.hero-stat-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+  background: linear-gradient(135deg, var(--text), var(--muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-stat-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.hero-divider { width: 1px; background: var(--border); align-self: stretch; }
+
+/* SCROLL INDICATOR */
+.scroll-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: fadeIn 1s 1s ease both, bounce 2s 2s ease infinite;
+}
+.scroll-hint-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.2));
+}
+.scroll-hint-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+@keyframes bounce {
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(8px)}
+}
+
+/* ── MATERIE SECTION ── */
+.materie {
+  padding: 80px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--border);
+}
+
+.materie-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
+}
+
+/* CARD BASE */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 36px;
+  text-decoration: none;
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: 12px;
+}
+.card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255,255,255,0.12);
+}
+.card:hover::before { opacity: 1; }
+
+/* DIRITTO */
+.card-diritto { grid-column: 1; grid-row: 1 / 3; }
+.card-diritto::before { background: radial-gradient(ellipse at 20% 20%, rgba(79,142,247,0.12) 0%, transparent 70%); }
+.card-diritto:hover { box-shadow: 0 30px 80px rgba(79,142,247,0.12), 0 0 0 1px rgba(79,142,247,0.15); }
+.card-diritto .card-accent { color: var(--diritto); }
+.card-diritto .card-num { color: var(--diritto); }
+.card-diritto .tag { background: var(--diritto-dim); color: var(--diritto); border-color: rgba(79,142,247,0.2); }
+.card-diritto .card-progress-fill { background: var(--diritto); }
+
+/* ITALIANO */
+.card-italiano { grid-column: 2; grid-row: 1; }
+.card-italiano::before { background: radial-gradient(ellipse at 80% 20%, rgba(232,96,122,0.12) 0%, transparent 70%); }
+.card-italiano:hover { box-shadow: 0 30px 80px rgba(232,96,122,0.12), 0 0 0 1px rgba(232,96,122,0.15); }
+.card-italiano .card-accent { color: var(--italiano); }
+.card-italiano .card-num { color: var(--italiano); }
+.card-italiano .tag { background: var(--italiano-dim); color: var(--italiano); border-color: rgba(232,96,122,0.2); }
+.card-italiano .card-progress-fill { background: var(--italiano); }
+
+/* STORIA */
+.card-storia { grid-column: 2; grid-row: 2; }
+.card-storia::before { background: radial-gradient(ellipse at 80% 80%, rgba(245,166,35,0.12) 0%, transparent 70%); }
+.card-storia:hover { box-shadow: 0 30px 80px rgba(245,166,35,0.12), 0 0 0 1px rgba(245,166,35,0.15); }
+.card-storia .card-accent { color: var(--storia); }
+.card-storia .card-num { color: var(--storia); }
+.card-storia .tag { background: var(--storia-dim); color: var(--storia); border-color: rgba(245,166,35,0.2); }
+.card-storia .card-progress-fill { background: var(--storia); }
+
+/* CARD INTERNALS */
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.card-icon {
+  width: 48px; height: 48px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+.card-num {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+.card-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.card-sub {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  flex: 1;
+}
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 28px;
+}
+.tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-progress {
+  flex: 1;
+  height: 2px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 1px;
+  margin-right: 16px;
+  overflow: hidden;
+}
+.card-progress-fill {
+  height: 100%;
+  border-radius: 1px;
+  transition: width 1s ease;
+}
+.card-arrow {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+  color: var(--muted);
+}
+.card:hover .card-arrow { transform: translate(3px, -3px); color: var(--text); }
+
+/* DIRITTO CARD = tall — extra content */
+.card-diritto .card-title { font-size: clamp(1.8rem, 3vw, 2.6rem); }
+.card-chapters {
+  margin: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cap-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  transition: all 0.2s ease;
+}
+.cap-item:hover { background: rgba(79,142,247,0.06); color: var(--text); }
+.cap-dot {
+  width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+  background: var(--diritto);
+}
+
+/* ── FEATURES ── */
+.features {
+  padding: 60px 24px 100px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.feat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px 24px;
+  transition: all 0.3s ease;
+}
+.feat:hover {
+  border-color: rgba(255,255,255,0.1);
+  transform: translateY(-3px);
+}
+.feat-icon {
+  font-size: 1.6rem;
+  margin-bottom: 16px;
+  display: block;
+}
+.feat-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+.feat-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.footer-brand {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.footer-brand span { color: var(--muted); font-weight: 300; }
+.footer-note {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Intersection observer classes */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .materie-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .card-diritto { grid-column: 1; grid-row: auto; }
+  .card-italiano { grid-column: 1; grid-row: auto; }
+  .card-storia { grid-column: 1; grid-row: auto; }
+  .features-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 24px; }
+  .footer { flex-direction: column; gap: 16px; text-align: center; }
+}
+
+/* CURSOR GLOW */
+.cursor-glow {
+  position: fixed;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124,106,240,0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease;
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-glow" id="cursor-glow"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Guida completa · 5° Liceo Scientifico
+    </div>
+
+    <h1 class="hero-title">
+      Maturit<span class="y">à</span>
+    </h1>
+    <span class="hero-year" data-text="2026">2026</span>
+
+    <p class="hero-sub">
+      Diritto · Italiano · Storia<br>
+      Riassunti, mini riassunti e mappe concettuali ramificate per ogni capitolo.
+    </p>
+
+    <a href="guida.html" class="hero-cta">
+      Apri la guida completa
+      <span class="hero-cta-arrow">→</span>
+    </a>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">Materie</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">37+</div>
+        <div class="hero-stat-label">Capitoli</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">15k</div>
+        <div class="hero-stat-label">Righe</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">∞</div>
+        <div class="hero-stat-label">Mappe</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span class="scroll-hint-label">Scroll</span>
+      <div class="scroll-hint-line"></div>
+    </div>
+  </section>
+
+  <!-- MATERIE -->
+  <section class="materie">
+    <div class="section-label reveal">Contenuto della guida</div>
+
+    <div class="materie-grid">
+
+      <!-- DIRITTO -->
+      <a href="guida.html#sez-diritto" class="card card-diritto reveal">
+        <div class="card-header">
+          <div class="card-icon">⚖️</div>
+          <div class="card-num">01 / 03</div>
+        </div>
+        <div class="card-title">Diritto<br>& Sport</div>
+        <p class="card-sub">
+          Devianza sportiva, illecito sportivo, Costituzione, organi dello Stato e Agenda 2030. Con mappe ramificate per ogni istituzione.
+        </p>
+        <div class="card-tags">
+          <span class="tag">Devianza</span>
+          <span class="tag">Doping</span>
+          <span class="tag">Costituzione</span>
+          <span class="tag">Parlamento</span>
+          <span class="tag">Governo</span>
+          <span class="tag">Giustizia</span>
+          <span class="tag">Agenda 2030</span>
+        </div>
+        <div class="card-chapters">
+          <div class="cap-item"><span class="cap-dot"></span>Cap 1 — Devianza e Sport</div>
+          <div class="cap-item"><span class="cap-dot"></span>Cap 2 — Illecito Sportivo</div>
+          <div class="cap-item"><span class="cap-dot"></span>Cap 3 — Sport e Costituzione</div>
+          <div class="cap-item"><span class="cap-dot"></span>Cap 4 — Doping</div>
+          <div class="cap-item"><span class="cap-dot"></span>Cap 5-9 — Organi dello Stato</div>
+          <div class="cap-item"><span class="cap-dot"></span>Cap 10 — Agenda 2030</div>
+        </div>
+        <div class="card-footer">
+          <div class="card-progress">
+            <div class="card-progress-fill" style="width:100%"></div>
+          </div>
+          <span class="card-arrow">↗</span>
+        </div>
+      </a>
+
+      <!-- ITALIANO -->
+      <a href="guida.html#sez-italiano" class="card card-italiano reveal reveal-delay-1">
+        <div class="card-header">
+          <div class="card-icon">α</div>
+          <div class="card-num">02 / 03</div>
+        </div>
+        <div class="card-title">Italiano</div>
+        <p class="card-sub">
+          Da Manzoni a Pirandello: 11 autori con analisi delle opere principali, contesto storico e temi letterari.
+        </p>
+        <div class="card-tags">
+          <span class="tag">Manzoni</span>
+          <span class="tag">Leopardi</span>
+          <span class="tag">Verga</span>
+          <span class="tag">Baudelaire</span>
+          <span class="tag">Pascoli</span>
+          <span class="tag">D'Annunzio</span>
+          <span class="tag">Svevo</span>
+          <span class="tag">Pirandello</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-progress">
+            <div class="card-progress-fill" style="width:100%"></div>
+          </div>
+          <span class="card-arrow">↗</span>
+        </div>
+      </a>
+
+      <!-- STORIA -->
+      <a href="guida.html#sez-storia" class="card card-storia reveal reveal-delay-2">
+        <div class="card-header">
+          <div class="card-icon">🌍</div>
+          <div class="card-num">03 / 03</div>
+        </div>
+        <div class="card-title">Storia</div>
+        <p class="card-sub">
+          Dal mondo di fine '800 alla Guerra Fredda: 9 capitoli con riassunti completi e mappe ramificate cronologiche.
+        </p>
+        <div class="card-tags">
+          <span class="tag">WW1</span>
+          <span class="tag">WW2</span>
+          <span class="tag">Fascismo</span>
+          <span class="tag">Nazismo</span>
+          <span class="tag">Stalinismo</span>
+          <span class="tag">Shoah</span>
+          <span class="tag">Resistenza</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-progress">
+            <div class="card-progress-fill" style="width:100%"></div>
+          </div>
+          <span class="card-arrow">↗</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="section-label reveal">Strumenti di studio</div>
+    <div class="features-grid">
+      <div class="feat reveal">
+        <span class="feat-icon">🗺️</span>
+        <div class="feat-title">Mappe ramificate</div>
+        <p class="feat-desc">Ogni capitolo ha una mappa concettuale espandibile con rami colorati, foglie dettagliate e frecce logiche. Cliccabili, con espandi/chiudi tutto.</p>
+      </div>
+      <div class="feat reveal reveal-delay-1">
+        <span class="feat-icon">📌</span>
+        <div class="feat-title">Box "Da sapere"</div>
+        <p class="feat-desc">37 box verdi con i punti essenziali per l'esame. Ripetizione fulminea — leggi il box e hai già il 90% di quello che serve.</p>
+      </div>
+      <div class="feat reveal reveal-delay-2">
+        <span class="feat-icon">◉</span>
+        <div class="feat-title">Mini riassunti</div>
+        <p class="feat-desc">Schema riepilogativo per ogni capitolo. Ogni riga ha un'etichetta tematica e il contenuto sintetico con date, nomi e concetti chiave.</p>
+      </div>
+      <div class="feat reveal">
+        <span class="feat-icon">⚡</span>
+        <div class="feat-title">Cause → Effetto</div>
+        <p class="feat-desc">6 box rossi con catene causali esplicite nei capitoli più complessi (WW1, WW2, Fascismo, Shoah). Il filo logico sempre visibile.</p>
+      </div>
+      <div class="feat reveal reveal-delay-1">
+        <span class="feat-icon">📖</span>
+        <div class="feat-title">Riassunti completi</div>
+        <p class="feat-desc">Testo di livello universitario con sottotitoli interni, spaziatura ottimizzata e highlights colorati per i concetti chiave.</p>
+      </div>
+      <div class="feat reveal reveal-delay-2">
+        <span class="feat-icon">🔍</span>
+        <div class="feat-title">Navigazione rapida</div>
+        <p class="feat-caps">Sommario laterale con tab per materia, barra di progresso di lettura, torna-su rapido e timeline cronologiche.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-brand">Maturità <span>2026</span></div>
+    <div class="footer-note">Diritto · Italiano · Storia · 5° Liceo Scientifico</div>
+  </footer>
+
+</div><!-- .page -->
+
+<script>
+// Cursor glow
+const glow = document.getElementById('cursor-glow');
+document.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+});
+
+// Intersection Observer for reveals
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Animate progress bars on scroll
+const progObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.card-progress-fill').forEach(bar => {
+        const w = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => bar.style.width = w, 100);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.card').forEach(c => progObs.observe(c));
+
+// Count-up for hero stats
+function countUp(el, target, suffix='') {
+  let current = 0;
+  const step = target / 40;
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    if (suffix === '+') {
+      el.textContent = Math.floor(current) + (current >= target ? '+' : '');
+    } else {
+      el.textContent = Math.floor(current) + suffix;
+    }
+    if (current >= target) clearInterval(timer);
+  }, 30);
+}
+
+const statsObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const nums = e.target.querySelectorAll('.hero-stat-num');
+      countUp(nums[0], 3);
+      countUp(nums[1], 37, '+');
+      countUp(nums[2], 15, 'k');
+      statsObs.disconnect();
+    }
+  });
+}, { threshold: 0.5 });
+
+const statsEl = document.querySelector('.hero-stats');
+if (statsEl) statsObs.observe(statsEl);
+</script>
+</body>
+</html>
