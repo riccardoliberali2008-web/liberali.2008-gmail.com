@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>Mini Riassunti Storia 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Sora:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;overflow:hidden;background:#0b0c14;font-family:'Sora',sans-serif;}
+
+/* ── DECK: horizontal scroll snap ── */
+#deck{
+  width:100vw;
+  height:100vh;
+  display:flex;
+  flex-direction:row;
+  overflow-x:scroll;
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+#deck::-webkit-scrollbar{display:none;}
+
+/* ── SLIDE ── */
+.slide{
+  flex:0 0 100vw;
+  width:100vw;
+  height:100vh;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  overflow:hidden;
+}
+
+/* ── .si: vertically scrollable content ── */
+.si{
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  padding:52px 22px 90px;
+}
+
+/* ── COVER ── */
+.s-cover{background:radial-gradient(ellipse at 25% 25%,rgba(79,142,247,.15) 0%,transparent 60%),#0b0c14;color:#eef0ff;}
+.s-cover .si{background:transparent;}
+.badge{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.28em;color:rgba(238,240,255,.4);text-transform:uppercase;margin-bottom:16px;}
+.cov-title{font-family:'Unbounded',sans-serif;font-size:clamp(2.4rem,10vw,4rem);font-weight:900;line-height:.92;letter-spacing:-.04em;background:linear-gradient(135deg,#eef0ff,rgba(238,240,255,.4));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;}
+.cov-sub{font-size:.78rem;color:rgba(238,240,255,.4);margin-bottom:24px;}
+.cov-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:24px;}
+.cov-ch{display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:7px;font-size:.72rem;color:#eef0ff;}
+.cn{font-size:.68rem;line-height:1.2;}
+.hint{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:.2em;color:rgba(238,240,255,.35);text-transform:uppercase;text-align:center;}
+
+/* ── CHAPTER ── */
+.chap-eye{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.28em;text-transform:uppercase;margin-bottom:16px;}
+.chap-icon{font-size:3.5rem;margin-bottom:14px;line-height:1;}
+.chap-title{font-family:'Unbounded',sans-serif;font-size:clamp(1.2rem,5vw,1.9rem);font-weight:700;line-height:1.1;letter-spacing:-.025em;margin-bottom:16px;}
+.chap-line{width:32px;height:3px;border-radius:2px;margin:0 0 16px;}
+.chap-hint{font-size:.8rem;margin-bottom:14px;}
+.theme-badge{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;border:1px solid;padding:4px 12px;border-radius:100px;display:inline-block;}
+
+/* ── ROW ── */
+.slide-accent-bar{position:absolute;top:0;left:0;right:0;height:3px;}
+.row-cap{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:10px;}
+.row-lbl{font-family:'Unbounded',sans-serif;font-size:clamp(.95rem,3.8vw,1.25rem);font-weight:700;line-height:1.2;letter-spacing:-.02em;padding:10px 14px;border-radius:0 8px 8px 0;margin-bottom:16px;word-break:break-word;}
+.row-bullets{display:flex;flex-direction:column;gap:8px;}
+.bullet{display:flex;align-items:flex-start;gap:10px;border:1px solid;border-radius:8px;padding:11px 13px;}
+.bnum{font-family:'Space Mono',monospace;font-size:.58rem;font-weight:700;flex-shrink:0;margin-top:2px;min-width:20px;line-height:1.4;}
+.btxt{font-size:.86rem;line-height:1.72;flex:1;}
+mark.mr{font-weight:700;padding:0 2px;border-radius:2px;background:rgba(232,96,122,.18);color:#f07090;}
+mark.mb{font-weight:700;padding:0 2px;border-radius:2px;background:rgba(79,142,247,.18);color:#7ab8ff;}
+mark.mg{font-weight:700;padding:0 2px;border-radius:2px;background:rgba(245,166,35,.15);color:#f5b842;}
+
+/* ── NAV BAR ── */
+#nav{
+  position:fixed;bottom:0;left:0;right:0;height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 14px;
+  background:rgba(5,6,12,.98);
+  border-top:1px solid rgba(255,255,255,.07);
+  z-index:999;
+}
+.nb{
+  width:52px;height:52px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.08);
+  color:#eef0ff;font-size:1.3rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.nb:active{background:rgba(255,255,255,.18);}
+.nb:disabled{opacity:.2;pointer-events:none;}
+.nc{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0 12px;}
+.npb{width:100%;height:2px;background:rgba(255,255,255,.08);border-radius:1px;overflow:hidden;}
+.npf{height:100%;background:#4f8ef7;border-radius:1px;transition:width .3s ease,background .4s ease;}
+.ncnt{font-family:'Space Mono',monospace;font-size:.57rem;letter-spacing:.12em;color:rgba(238,240,255,.4);}
+
+/* ── MENU ── */
+#mbtn{position:fixed;top:14px;right:14px;width:40px;height:40px;border-radius:9px;background:rgba(5,6,12,.9);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:999;font-size:1rem;color:#eef0ff;-webkit-tap-highlight-color:transparent;}
+#menu{position:fixed;inset:0;background:rgba(5,6,12,.98);z-index:1000;display:none;flex-direction:column;padding:56px 20px 20px;overflow-y:auto;}
+#menu.open{display:flex;}
+.mcl{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;color:#eef0ff;-webkit-tap-highlight-color:transparent;}
+.mtitle{font-family:'Unbounded',sans-serif;font-size:1rem;font-weight:700;margin-bottom:16px;color:#eef0ff;}
+.mlist{display:flex;flex-direction:column;gap:4px;}
+.mitem{display:flex;align-items:center;gap:10px;padding:12px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.mitem:active{background:rgba(255,255,255,.1);}
+.mdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.mname{font-size:.8rem;color:#eef0ff;flex:1;}
+.mth{font-family:'Space Mono',monospace;font-size:.52rem;color:rgba(238,240,255,.35);}
+</style>
+</head>
+<body>
+<div id="deck">
+<div class="slide s-cover" id="slide-0">
+  <div class="si">
+    <div class="badge">MINI RIASSUNTI · STORIA · MATURITÀ 2026</div>
+    <h1 class="cov-title">Mini<br>Riassunti</h1>
+    <p class="cov-sub">9 capitoli · 79 slide · ogni capitolo con il suo stile</p>
+    <div class="cov-grid"><div class="cov-ch"><span>🌍</span><span class="cn">Il Mondo all'Inizio del '900</span></div><div class="cov-ch"><span>🏛</span><span class="cn">L'Età Giolittiana</span></div><div class="cov-ch"><span>⚔</span><span class="cn">La Prima Guerra Mondiale</span></div><div class="cov-ch"><span>🔥</span><span class="cn">Il Dopoguerra e il Fascismo</span></div><div class="cov-ch"><span>⚫</span><span class="cn">L'Italia Fascista</span></div><div class="cov-ch"><span>🔴</span><span class="cn">La Rivoluzione Russa</span></div><div class="cov-ch"><span>☭</span><span class="cn">Lo Stalinismo</span></div><div class="cov-ch"><span>✠</span><span class="cn">L'Avvento del Nazismo</span></div><div class="cov-ch"><span>💥</span><span class="cn">La Seconda Guerra Mondiale</span></div></div>
+    <p class="hint">Usa le frecce ← → per navigare</p>
+  </div>
+</div>
+<div class="slide" id="slide-1" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="chap-eye" style="color:rgba(245,236,215,0.5);">Mini Riassunto · Capitolo 1 di 9</div>
+    <div class="chap-icon">🌍</div>
+    <h2 class="chap-title">Il Mondo all'Inizio del '900</h2>
+    <div class="chap-line" style="background:#c9a227;"></div>
+    <p class="chap-hint" style="color:rgba(245,236,215,0.5);">Scorri → per ripassare</p>
+    <div class="theme-badge" style="color:rgba(245,236,215,0.5);border-color:rgba(201,162,39,0.2);">Art Nouveau</div>
+  </div>
+</div>
+<div class="slide" id="slide-2" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">2a Rivoluzione Industriale</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Acciaio + Elettricità</mark> → nascita di <mark class="mr">Oligopoli e Monopoli</mark> → imprenditori concentrano capitali → <mark class="mg">Banche miste</mark> (finanziano le imprese) → <mark class="mg">Cartelli, Trust, Holding</mark> → passaggio al <mark class="mr">capitalismo monopolistico e finanziario</mark></span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;">Lo Stato interviene: <mark class="mb">istruzione primaria</mark> (legge Casati 1859, Coppino 1877), <mark class="mb">armamenti</mark>, <mark class="mb">legislazione sociale</mark> (pensioni, infortuni, lavoro minorile) → aumento <mark class="mr">prelievi fiscali</mark></span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;">Fine del <mark class="mg">laissez-faire</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-3" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">Democratizzazione</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;">Progressi medici: <mark class="mg">Pasteur, Koch, Lister</mark> → calo mortalità → vita media aumenta</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;">Suffragio universale maschile: <mark class="mb">Francia 1848</mark>, <mark class="mb">Germania 1871</mark>, <mark class="mb">Italia 1912</mark> (riforma Giolitti), Belgio 1893, Svezia 1907</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;">Inghilterra: <mark class="mr">suffragette</mark> — <mark class="mg">Emmeline Pankhurst</mark>, WSPU 1903 → voto <mark class="mb">1918</mark> (parziale) e <mark class="mb">1928</mark> (pieno)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;">Pena di morte sempre più rara.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-4" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">Belle Époque & Classe Dirigente</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mg">Alta borghesia + Aristocrazia</mark> → unica classe dirigente finanziaria, industriale, agraria</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;">Stile di vita: arte, spettacoli, Riviera francese, caffè eleganti</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;">Periodo chiamato <mark class="mr">Belle Époque</mark> (1880–1914): ottimismo e prosperità</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;">Con allargamento del suffragio → necessità di <mark class="mr">consenso popolare</mark> attraverso le elezioni.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-5" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">Società di Massa</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;">Popolazione europea: da 270 a 400 mln (1850–1900)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">30 milioni di emigrati</mark> verso le Americhe (1880–1914)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;">Città enormi: <mark class="mb">Londra 7 mln, Parigi 3 mln, Berlino e Vienna 2 mln</mark></span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Società urbana.</mark> <mark class="mg">Uomo massa</mark> (Ortega y Gasset, <i>La ribellione delle masse</i> 1929): produce, consuma e pensa in modo uniforme</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">05</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Grandi Magazzini</mark> (Bon Marché, Selfridges 1909) → prezzi fissi → consumismo → pubblicità → moda</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">06</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Divertimento di massa</mark>: stampa, romanzi, cinema, sport.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-6" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">Taylor & Ford</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mg">Frederick W</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;">Taylor</mark> → <i>Principles of Scientific Management</i> (1911): calcolo tempi, misurazione costi, ottimizzazione, cottimo</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mg">Henry Ford</mark> → <mark class="mr">catena di montaggio 1913</mark> (officine Highland Park, Modello T): da 12 ore a 90 min di assemblaggio</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Five Dollar Day 1914</mark>: salario doppio. 4 principi tayloristici: gerarchia, parcellizzazione, manodopera intercambiabile, cottimo</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">05</span>
+  <span class="btxt" style="color:#f5ecd7;">Effetti: lavoro <mark class="mr">alienante</mark> → <mark class="mg">Marx</mark> (alienazione), <mark class="mg">Gramsci</mark> (<i>Americanismo e Fordismo</i>, carcere 1929–35).</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-7" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">Nazionalismo & Pangermanesimo</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;">Rituali nazionali: <mark class="mb">Sedan Fest</mark> (Germania), <mark class="mb">Bastiglia</mark> (Francia), <mark class="mb">Festa dello Statuto</mark> (Italia) → <mark class="mg">Eric Hobsbawm</mark>: "invenzione della tradizione"</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Pangermanesimo</mark>: unire tutti i popoli di lingua tedesca → <mark class="mg">Alldeutscher Verband</mark> (1891) → monumenti nazionali, associazioni sportive e culturali</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;">Secondo Reich fondato da <mark class="mg">Bismarck</mark> nel 1871</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;">Nazionalismo → <mark class="mr">funzione antidemocratica</mark>: giustifica colonialismo e guerre, alimenta il razzismo, pervade sport, istruzione e propaganda.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-8" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">Razzismo</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mg">J.-A. de Gobineau</mark> (1853–55): superiorità razza ariana germanica</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;">Chamberlain</mark> (1899): storia = lotta ariani vs ebrei → <mark class="mr">antisemitismo razzista</mark></span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mg">Herbert Spencer</mark> → <mark class="mb">Darwinismo sociale</mark>: "sopravvivenza del più adatto" → dominio imperialista = prova superiorità biologica</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mg">Francis Galton</mark> → <mark class="mb">eugenica</mark>: preservare i "caratteri migliori"</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">05</span>
+  <span class="btxt" style="color:#f5ecd7;">USA: schiavitù abolita <mark class="mb">1865</mark> ma <mark class="mr">Leggi di Jim Crow</mark> (segregazione) fino al Civil Rights Act <mark class="mb">1964</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-9" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">Antisemitismo</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;">Termine coniato da <mark class="mg">Wilhelm Marr</mark> nel 1879</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;">Cause: accuse di deicidio, stereotipo del capitalista ebreo, comunità chiuse accusate di complotti</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Protocolli dei Savi di Sion</mark> (~1900): falso documento della polizia zarista</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Pogrom</mark> di <mark class="mb">Kishinev 1903</mark> (49 morti), frequenti in Russia dopo assassinio zar Alessandro II (1881)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">05</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Affare Dreyfus</mark> (1894): capitano ebreo <mark class="mg">Alfred Dreyfus</mark> condannato su prove false → <mark class="mg">Émile Zola</mark> scrive <i>J'accuse!</i> (1898) → riabilitazione 1906</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">06</span>
+  <span class="btxt" style="color:#f5ecd7;">Conseguenza: <mark class="mg">Theodor Herzl</mark> fonda il <mark class="mp">sionismo</mark> nel 1897.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-10" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">Imperialismo 1870–1914</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;">Paesi protagonisti: <mark class="mr">GB, Francia, Germania, USA, Giappone</mark></span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;">Cause economiche: <mark class="mg">John Hobson</mark> (1902) + <mark class="mg">Lenin</mark> (<i>L'imperialismo</i>, 1916) → sovrapproduzione, capitali in eccesso</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;">Causa navale: <mark class="mg">Mahan</mark> (<i>Sea Power</i>, 1890)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;">Causa ideologica: <mark class="mg">Kipling</mark> → "fardello dell'uomo bianco"</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">05</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Conferenza di Berlino 1884–85</mark> (Bismarck) → spartizione Africa → principio "effettiva occupazione". 1880: 10% Africa controllata → 1914: solo <mark class="mb">Etiopia e Liberia</mark> indipendenti.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-11" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">Giappone</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;">Restaurazione <mark class="mr">Meiji 1868</mark>: Imperatore <mark class="mg">Mutsuhito</mark> riprende potere dagli Shogun <mark class="mg">Tokugawa</mark></span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;">Riforme: abolizione feudalesimo, ferrovie, esercito modello prussiano</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Costituzione Meiji 1889</mark>. 1a guerra sino-giapponese <mark class="mb">1894–95</mark> → <mark class="mb">Trattato di Shimonoseki</mark>: Taiwan, indipendenza Corea. "Triplice Intervento" (Russia, Francia, Germania) → restituzione Liaodong</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Alleanza Anglo-Giapponese 1902</mark></span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">05</span>
+  <span class="btxt" style="color:#f5ecd7;">Guerra russo-giapponese <mark class="mb">1904–05</mark>: vittoria a <mark class="mr">Tsushima</mark> → <mark class="mr">prima potenza asiatica a sconfiggere una europea</mark></span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">06</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Trattato di Portsmouth 1905</mark> (mediatore <mark class="mg">Roosevelt</mark>, Nobel 1906): Corea, Manciuria meridionale, Sakhalin</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">07</span>
+  <span class="btxt" style="color:#f5ecd7;">Annessione Corea <mark class="mb">1910</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-12" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">USA</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;">Teorico: <mark class="mg">Mahan</mark> (<i>Sea Power</i>, 1890)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;">Alaska 1867</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Pearl Harbor 1887</mark> → Hawaii annesse 1898</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Guerra ispano-americana 1898</mark>: esplosione USS Maine → Trattato di Parigi: Cuba "indipendente" ma sotto controllo USA + Filippine + Porto Rico + Guam</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">05</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Canale di Panama 1903</mark> (secessione da Colombia, inaugurato 1914)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">06</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Corollario Roosevelt 1904</mark>: diritto di intervento in America Latina</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">07</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mg">"Diplomazia del dollaro"</mark>: controllo economico-politico di Nicaragua, Honduras, Repubblica Dominicana.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-13" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">Gran Bretagna</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;">Impero: <mark class="mr">oltre 1/4 della superficie terrestre</mark>, 444 mln sudditi, 3× l'impero francese, 10× quello tedesco</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Canale di Suez 1882</mark>: occupa l'Egitto con la scusa della rivolta di <mark class="mg">Urabi Pascià</mark></span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Great Game</mark> (Afghanistan vs Russia) → <mark class="mb">Convenzione anglo-russa 1907</mark></span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Guerre Anglo-Boere</mark> vs <mark class="mg">Boeri/Afrikaners</mark> (coloni olandesi) per giacimenti oro e diamanti: 1a guerra 1880–81 (sconfitta inglese a Majuba Hill), 2a guerra 1899–1902: gen</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">05</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mg">Kitchener</mark> → <mark class="mr">campi di concentramento</mark> → <mark class="mr">26–28.000 morti</mark> (soprattutto bambini)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">06</span>
+  <span class="btxt" style="color:#f5ecd7;">Trattato di Vereeniging 1902</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">07</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Unione Sudafricana 1910</mark></span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">08</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mg">Cecil Rhodes</mark>: magnate delle miniere e fautore del colonialismo.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-14" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">Sport e Impero</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Empire Day</mark> (24 maggio)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mg">Niall Ferguson</mark> (<i>Impero</i>, 2002): le <i>public schools</i> formano la mentalità imperiale sui campi da gioco</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Football FA 1863</mark>: troppo popolare, amato dai tedeschi → <mark class="mr">NO propaganda imperiale</mark> (non diffuso nelle ex-colonie)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Rugby 1871</mark>: sport delle élite, "sport da teppisti giocato da gentiluomini" → conquista Sudafrica, Australia, Nuova Zelanda → <mark class="mg">New Zealand All Blacks 1905</mark></span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">05</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Cricket</mark>: vero sport dell'Impero, trascende le divisioni razziali → India, Caraibi, colonie bianche → <mark class="mg">W.C</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">06</span>
+  <span class="btxt" style="color:#f5ecd7;">Grace</mark> (tournée Australia 1873–74) → Australia batte Inghilterra a <mark class="mb">The Oval 1882</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-15" style="background:#0e0b07;color:#f5ecd7;">
+  <div class="si" style="background:#0e0b07;color:#f5ecd7;">
+    <div class="row-cap" style="color:rgba(245,236,215,0.5);">CAP. 1 · Il Mondo all'Inizio del '900</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c9a227 12%,transparent);border-left:4px solid #c9a227;color:#f5ecd7;">Alleanze → WWI</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">01</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Trattato Dual 1879</mark> (Bismarck: Germania + Austria) → <mark class="mr">Triplice Alleanza 1882</mark>: Germania + Austria-Ungheria + Italia (irredentismo: Trento e Trieste)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">02</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mr">Intesa Franco-Russa 1894</mark>: Francia + Russia zarista (accerchiamento blocco austro-tedesco)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">03</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Entente Cordiale 1904</mark>: Francia + Gran Bretagna (controversie coloniali risolte)</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">04</span>
+  <span class="btxt" style="color:#f5ecd7;"><mark class="mb">Triple Entente 1907</mark>: GB + Francia + Russia</span>
+</div><div class="bullet" style="background:#1a1508;border-color:rgba(201,162,39,0.2);">
+  <span class="bnum" style="color:#c9a227;">05</span>
+  <span class="btxt" style="color:#f5ecd7;">Germania si sente accerchiata → ammiraglio <mark class="mg">Tirpitz</mark> → <mark class="mr">riarmo navale tedesco</mark> → corsa agli armamenti navali GB–Germania → <mark class="mr">basi della Prima Guerra Mondiale</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c9a227;"></div>
+</div>
+<div class="slide" id="slide-16" style="background:#070e0b;color:#d4f0e0;">
+  <div class="si" style="background:#070e0b;color:#d4f0e0;">
+    <div class="chap-eye" style="color:rgba(212,240,224,0.5);">Mini Riassunto · Capitolo 2 di 9</div>
+    <div class="chap-icon">🏛</div>
+    <h2 class="chap-title">L'Età Giolittiana</h2>
+    <div class="chap-line" style="background:#3db87a;"></div>
+    <p class="chap-hint" style="color:rgba(212,240,224,0.5);">Scorri → per ripassare</p>
+    <div class="theme-badge" style="color:rgba(212,240,224,0.5);border-color:rgba(61,184,122,0.2);">Liberty</div>
+  </div>
+</div>
+<div class="slide" id="slide-17" style="background:#070e0b;color:#d4f0e0;">
+  <div class="si" style="background:#070e0b;color:#d4f0e0;">
+    <div class="row-cap" style="color:rgba(212,240,224,0.5);">CAP. 2 · L'Età Giolittiana</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#3db87a 12%,transparent);border-left:4px solid #3db87a;color:#d4f0e0;">Chi è Giolitti</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">01</span>
+  <span class="btxt" style="color:#d4f0e0;"><mark class="mg">Giovanni Giolitti</mark> domina la vita politica italiana dal <mark class="mr">1901 al 1914</mark></span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">02</span>
+  <span class="btxt" style="color:#d4f0e0;">Più volte Presidente del Consiglio</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">03</span>
+  <span class="btxt" style="color:#d4f0e0;">La sua azione politica è talmente influente da definire un'intera epoca: l'<mark class="mr">età giolittiana</mark></span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">04</span>
+  <span class="btxt" style="color:#d4f0e0;">È un liberale conservatore che usa il <mark class="mg">trasformismo</mark> — assorbire le opposizioni nella maggioranza — per mantenere il potere.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#3db87a;"></div>
+</div>
+<div class="slide" id="slide-18" style="background:#070e0b;color:#d4f0e0;">
+  <div class="si" style="background:#070e0b;color:#d4f0e0;">
+    <div class="row-cap" style="color:rgba(212,240,224,0.5);">CAP. 2 · L'Età Giolittiana</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#3db87a 12%,transparent);border-left:4px solid #3db87a;color:#d4f0e0;">Contesto economico</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">01</span>
+  <span class="btxt" style="color:#d4f0e0;">Decollo della <mark class="mr">rivoluzione industriale in Italia</mark></span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">02</span>
+  <span class="btxt" style="color:#d4f0e0;"><mark class="mg">Triangolo industriale</mark>: Genova + Torino + Milano</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">03</span>
+  <span class="btxt" style="color:#d4f0e0;">Nascono <mark class="mg">FIAT</mark> (1899) e <mark class="mg">Pirelli</mark></span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">04</span>
+  <span class="btxt" style="color:#d4f0e0;"><mark class="mb">Politica protezionistica</mark>: favorisce il Nord → <mark class="mr">danneggia il Sud</mark></span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">05</span>
+  <span class="btxt" style="color:#d4f0e0;">Crescita economica porta miglioramento del livello di vita ma anche <mark class="mr">disparità sociale e affollamento urbano</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#3db87a;"></div>
+</div>
+<div class="slide" id="slide-19" style="background:#070e0b;color:#d4f0e0;">
+  <div class="si" style="background:#070e0b;color:#d4f0e0;">
+    <div class="row-cap" style="color:rgba(212,240,224,0.5);">CAP. 2 · L'Età Giolittiana</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#3db87a 12%,transparent);border-left:4px solid #3db87a;color:#d4f0e0;">Giolitti bifronte</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">01</span>
+  <span class="btxt" style="color:#d4f0e0;"><mark class="mb">Al Nord</mark>: posizione <mark class="mg">neutrale</mark> negli scioperi → tutela dei lavoratori → intervento sindacale → aumento salari → crescita economica</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">02</span>
+  <span class="btxt" style="color:#d4f0e0;">Varò riforme sociali. <br><mark class="mr">Al Sud</mark>: repressione degli scioperi con le forze dell'ordine → <mark class="mr">clientelismo e corruzione</mark> → alimenta la malavita → "leggi speciali" inefficaci</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">03</span>
+  <span class="btxt" style="color:#d4f0e0;">Il Sud = <mark class="mr">"serbatoio di voti"</mark>. <br>Satira: vignetta <mark class="mg">"Giolitti Bifronte"</mark> della rivista <i>L'Asino</i> (1911).</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#3db87a;"></div>
+</div>
+<div class="slide" id="slide-20" style="background:#070e0b;color:#d4f0e0;">
+  <div class="si" style="background:#070e0b;color:#d4f0e0;">
+    <div class="row-cap" style="color:rgba(212,240,224,0.5);">CAP. 2 · L'Età Giolittiana</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#3db87a 12%,transparent);border-left:4px solid #3db87a;color:#d4f0e0;">Emigrazione italiana</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">01</span>
+  <span class="btxt" style="color:#d4f0e0;"><mark class="mr">9 milioni di italiani emigrano</mark> tra il 1900 e il 1914 verso USA, Nord Europa e Sud America</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">02</span>
+  <span class="btxt" style="color:#d4f0e0;">Causa principale: crisi economica del Sud + industria del Nord non assorbe tutta la manodopera rurale</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">03</span>
+  <span class="btxt" style="color:#d4f0e0;">Effetti positivi: <mark class="mg">rimesse</mark> (denaro inviato alle famiglie)</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">04</span>
+  <span class="btxt" style="color:#d4f0e0;">Effetti negativi: <mark class="mr">spopolamento</mark>, degrado, dissesto idrogeologico</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">05</span>
+  <span class="btxt" style="color:#d4f0e0;">La Sicilia passa da 226.000 emigrati (1876–1900) a <mark class="mr">1.126.000</mark> (1901–1915).</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#3db87a;"></div>
+</div>
+<div class="slide" id="slide-21" style="background:#070e0b;color:#d4f0e0;">
+  <div class="si" style="background:#070e0b;color:#d4f0e0;">
+    <div class="row-cap" style="color:rgba(212,240,224,0.5);">CAP. 2 · L'Età Giolittiana</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#3db87a 12%,transparent);border-left:4px solid #3db87a;color:#d4f0e0;">Guerra di Libia</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">01</span>
+  <span class="btxt" style="color:#d4f0e0;"><mark class="mr">1911</mark>: l'Italia dichiara guerra alla <mark class="mg">Turchia ottomana</mark> per conquistare la Libia</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">02</span>
+  <span class="btxt" style="color:#d4f0e0;">Resistenza locale forte → l'Italia attacca la Turchia nel Mar Egeo</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">03</span>
+  <span class="btxt" style="color:#d4f0e0;"><mark class="mr">1912</mark>: <mark class="mg">Trattato di Losanna</mark> → la Turchia cede la Libia</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">04</span>
+  <span class="btxt" style="color:#d4f0e0;">Risultato: la Libia si rivela <mark class="mr">"uno scatolone di sabbia"</mark>, senza le ricchezze promesse dalla propaganda</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">05</span>
+  <span class="btxt" style="color:#d4f0e0;">Ingenti spese senza benefici reali</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">06</span>
+  <span class="btxt" style="color:#d4f0e0;">Critiche dei socialisti riformisti.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#3db87a;"></div>
+</div>
+<div class="slide" id="slide-22" style="background:#070e0b;color:#d4f0e0;">
+  <div class="si" style="background:#070e0b;color:#d4f0e0;">
+    <div class="row-cap" style="color:rgba(212,240,224,0.5);">CAP. 2 · L'Età Giolittiana</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#3db87a 12%,transparent);border-left:4px solid #3db87a;color:#d4f0e0;">Suffragio & Patto Gentiloni</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">01</span>
+  <span class="btxt" style="color:#d4f0e0;"><mark class="mr">1912</mark>: introduzione del <mark class="mg">suffragio universale maschile</mark> — gli aventi diritto al voto triplicano (da ~3 a ~8 milioni)</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">02</span>
+  <span class="btxt" style="color:#d4f0e0;">Obiettivo: avvicinare cattolici e socialisti</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">03</span>
+  <span class="btxt" style="color:#d4f0e0;"><mark class="mr">1913</mark>: <mark class="mg">Patto Gentiloni</mark> con l'Unione Elettorale Cattolica → i cattolici votano i candidati liberali che difendono la Chiesa → Giolitti vince le elezioni</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">04</span>
+  <span class="btxt" style="color:#d4f0e0;">Ma la guerra in Libia e la crisi economica lo indeboliscono.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#3db87a;"></div>
+</div>
+<div class="slide" id="slide-23" style="background:#070e0b;color:#d4f0e0;">
+  <div class="si" style="background:#070e0b;color:#d4f0e0;">
+    <div class="row-cap" style="color:rgba(212,240,224,0.5);">CAP. 2 · L'Età Giolittiana</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#3db87a 12%,transparent);border-left:4px solid #3db87a;color:#d4f0e0;">Fine dell'era</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">01</span>
+  <span class="btxt" style="color:#d4f0e0;"><mark class="mr">1914</mark>: Giolitti si dimette</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">02</span>
+  <span class="btxt" style="color:#d4f0e0;">Successore: <mark class="mg">Antonio Salandra</mark></span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">03</span>
+  <span class="btxt" style="color:#d4f0e0;">Clima di tensione sociale crescente — <mark class="mr">"settimana rossa"</mark> (giugno 1914)</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">04</span>
+  <span class="btxt" style="color:#d4f0e0;">L'Italia viene trascinata verso il <mark class="mr">primo conflitto mondiale</mark></span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">05</span>
+  <span class="btxt" style="color:#d4f0e0;">L'età giolittiana è finita</span>
+</div><div class="bullet" style="background:#0d1a12;border-color:rgba(61,184,122,0.2);">
+  <span class="bnum" style="color:#3db87a;">06</span>
+  <span class="btxt" style="color:#d4f0e0;">Il suo lascito: Italia industrializzata al Nord, ma con un Sud arretrato e un paese profondamente diviso.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#3db87a;"></div>
+</div>
+<div class="slide" id="slide-24" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="chap-eye" style="color:rgba(240,232,232,0.5);">Mini Riassunto · Capitolo 3 di 9</div>
+    <div class="chap-icon">⚔</div>
+    <h2 class="chap-title">La Prima Guerra Mondiale</h2>
+    <div class="chap-line" style="background:#c0392b;"></div>
+    <p class="chap-hint" style="color:rgba(240,232,232,0.5);">Scorri → per ripassare</p>
+    <div class="theme-badge" style="color:rgba(240,232,232,0.5);border-color:rgba(192,57,43,0.25);">Guerra</div>
+  </div>
+</div>
+<div class="slide" id="slide-25" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="row-cap" style="color:rgba(240,232,232,0.5);">CAP. 3 · La Prima Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c0392b 12%,transparent);border-left:4px solid #c0392b;color:#f0e8e8;">Le cause profonde (1870–1914)</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">01</span>
+  <span class="btxt" style="color:#f0e8e8;">4 cause strutturali: <mark class="mr">Nazionalismo</mark> (ogni popolo si sente superiore, le minoranze vogliono l'indipendenza)</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">02</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">Militarismo</mark> (spese militari raddoppiate, stati maggiori con piani di guerra già pronti)</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">03</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">Imperialismo</mark> (competizione per le colonie in Africa e Asia)</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">04</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">Sistema delle alleanze</mark> (qualsiasi scontro locale diventa guerra generale). <mark class="mb">Triplice Alleanza 1882</mark>: Germania + Austria-Ungheria + Italia. <mark class="mb">Triplice Intesa 1907</mark>: Francia + GB + Russia. Riarmo navale tedesco (<mark class="mg">ammiraglio Tirpitz</mark>) contro GB. <mark class="mr">Crisi Balcani</mark>: Austria-Ungheria fragile (12 etnie diverse), Serbia vuole espandersi, Russia difende gli slavi.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c0392b;"></div>
+</div>
+<div class="slide" id="slide-26" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="row-cap" style="color:rgba(240,232,232,0.5);">CAP. 3 · La Prima Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c0392b 12%,transparent);border-left:4px solid #c0392b;color:#f0e8e8;">La scintilla — Sarajevo 28/6/1914</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">01</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mg">Gavrilo Princip</mark> (organizzazione <mark class="mr">Mano Nera</mark>) uccide l'arciduca <mark class="mg">Francesco Ferdinando</mark> e la moglie</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">02</span>
+  <span class="btxt" style="color:#f0e8e8;">Austria usa l'attentato come pretesto → ultimatum umiliante alla Serbia → Serbia accetta tutto tranne ingresso polizia austriaca → <mark class="mb">28 luglio 1914</mark>: Austria dichiara guerra alla Serbia → Russia mobilita → Germania dichiara guerra a Russia (1/8) e Francia (3/8) → Germania invade Belgio neutrale (<mark class="mr">Piano Schlieffen</mark>) → <mark class="mb">5 agosto 1914</mark>: GB entra in guerra → guerra mondiale in 6 settimane.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c0392b;"></div>
+</div>
+<div class="slide" id="slide-27" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="row-cap" style="color:rgba(240,232,232,0.5);">CAP. 3 · La Prima Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c0392b 12%,transparent);border-left:4px solid #c0392b;color:#f0e8e8;">Piano Schlieffen — perché fallì</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">01</span>
+  <span class="btxt" style="color:#f0e8e8;">Piano: attacca Francia via Belgio in 6 settimane → poi concentra tutto sull'est contro Russia. <mark class="mr">FALLISCE perché</mark>: Belgio resiste → GB entra in guerra</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">02</span>
+  <span class="btxt" style="color:#f0e8e8;">Francia ferma i tedeschi sulla <mark class="mg">Marna</mark> (6-12 settembre 1914, taxi di Parigi portano soldati al fronte)</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">03</span>
+  <span class="btxt" style="color:#f0e8e8;">Russi attaccano a est prima del previsto, costringendo i tedeschi a rallentare. → La "guerra lampo" diventa <mark class="mr">guerra di posizione</mark>: 750 km di trincee dal Mare del Nord alla Svizzera.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c0392b;"></div>
+</div>
+<div class="slide" id="slide-28" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="row-cap" style="color:rgba(240,232,232,0.5);">CAP. 3 · La Prima Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c0392b 12%,transparent);border-left:4px solid #c0392b;color:#f0e8e8;">Propaganda e entusiasmo iniziale</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">01</span>
+  <span class="btxt" style="color:#f0e8e8;">Agosto 1914: piazze piene in tutta Europa</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">02</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mg">Unione Sacra</mark> (Francia) / <mark class="mg">Burgfrieden</mark> (Germania): anche i socialisti votano i crediti di guerra</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">03</span>
+  <span class="btxt" style="color:#f0e8e8;">Manifesti, giornali, film: si credeva a una guerra breve e gloriosa</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">04</span>
+  <span class="btxt" style="color:#f0e8e8;">In Italia: <mark class="mr">radiose giornate di maggio 1915</mark> con <mark class="mg">D'Annunzio</mark></span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">05</span>
+  <span class="btxt" style="color:#f0e8e8;">Leva obbligatoria + ferrovie = eserciti di milioni in settimane (solo la Germania: 1,5 mln di uomini sul fronte ovest)</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">06</span>
+  <span class="btxt" style="color:#f0e8e8;">Fronte interno: razionamento, lavoro femminile in fabbrica, controllo statale dell'economia, propaganda controlla i giornali.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c0392b;"></div>
+</div>
+<div class="slide" id="slide-29" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="row-cap" style="color:rgba(240,232,232,0.5);">CAP. 3 · La Prima Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c0392b 12%,transparent);border-left:4px solid #c0392b;color:#f0e8e8;">La guerra di trincea — vita quotidiana</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">01</span>
+  <span class="btxt" style="color:#f0e8e8;">Fossati 2m di profondità pensati come rifugi temporanei → diventano permanenti</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">02</span>
+  <span class="btxt" style="color:#f0e8e8;">Schema di ogni assalto: <mark class="mr">artiglieria pesante ore → fanteria esce → mitragliatrici nemiche falciano → pochi sopravvissuti conquistano parte della trincea → reparti di 2ª/3ª/5ª linea difendono</mark> → migliaia di morti per guadagnare 100 metri</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">03</span>
+  <span class="btxt" style="color:#f0e8e8;">Psicologia: rassegnazione, apatia, insubordinazione</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">04</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">Fronte occidentale</mark>: trincee con cemento ed elettricità</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">05</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">Fronte italiano</mark>: rocce e muretti (terreno montuoso)</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">06</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">Fronte orientale</mark>: guerra mista posizione-movimento (pianure troppo vaste).</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c0392b;"></div>
+</div>
+<div class="slide" id="slide-30" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="row-cap" style="color:rgba(240,232,232,0.5);">CAP. 3 · La Prima Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c0392b 12%,transparent);border-left:4px solid #c0392b;color:#f0e8e8;">Le nuove armi tecnologiche</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">01</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">Gas tossici</mark>: usati per la prima volta ad <mark class="mg">Ypres</mark> (aprile 1915), cloro e iprite → soffocano i soldati senza maschere</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">02</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">U-Boot</mark> (sommergibili tedeschi): attaccano navi militari e civili</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">03</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">Carri armati</mark>: sperimentati dagli inglesi sulla Somme (luglio 1916), ruote di auto blindate sostituite da cingoli</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">04</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mg">~200.000 aerei</mark>: ricognizione e duelli aerei</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">05</span>
+  <span class="btxt" style="color:#f0e8e8;">Mitragliatrici automatiche: principali responsabili delle perdite negli assalti</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">06</span>
+  <span class="btxt" style="color:#f0e8e8;">Radio e telegrafo per le comunicazioni.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c0392b;"></div>
+</div>
+<div class="slide" id="slide-31" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="row-cap" style="color:rgba(240,232,232,0.5);">CAP. 3 · La Prima Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c0392b 12%,transparent);border-left:4px solid #c0392b;color:#f0e8e8;">I tre fronti 1915–1916</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">01</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">FRONTE ITALIANO</mark>: 4 battaglie dell'Isonzo 1915 → 250.000 morti, nessun avanzamento</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">02</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mg">Strafexpedition</mark> austriaca giugno 1916: sfondamento fino ad Asiago, poi fermata</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">03</span>
+  <span class="btxt" style="color:#f0e8e8;">Unico successo: conquista di <mark class="mg">Gorizia</mark> agosto 1916</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">04</span>
+  <span class="btxt" style="color:#f0e8e8;">Generale <mark class="mg">Cadorna</mark>: 11 offensive fallimentari. — <mark class="mb">FRONTE OCCIDENTALE</mark>: <mark class="mr">Verdun</mark> (21 feb–dic 1916): obiettivo tedesco = "dissanguare" la Francia → 600.000 vittime totali, francesi resistono</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">05</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">Somme</mark> (luglio 1916): primo giorno = 57.000 vittime britanniche in 24h (record storico) → quasi 1 mln vittime totali. — <mark class="mb">FRONTE ORIENTALE</mark>: <mark class="mg">Gorlice-Tarnòw</mark> 1915: Russia perde Polonia (1 mln uomini)</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">06</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mg">Offensiva Brusilov</mark> 1916: successi iniziali russi → Romania entra in guerra → battuta dagli Imperi Centrali</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">07</span>
+  <span class="btxt" style="color:#f0e8e8;">Dardanelli 1915: tentativo britannico fallisce.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c0392b;"></div>
+</div>
+<div class="slide" id="slide-32" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="row-cap" style="color:rgba(240,232,232,0.5);">CAP. 3 · La Prima Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c0392b 12%,transparent);border-left:4px solid #c0392b;color:#f0e8e8;">Guerra navale e U-Boot</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">01</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">Blocco navale</mark> britannico nel Mare del Nord: taglia rifornimenti alla Germania → fame, razionamento, "rapa d'inverno" 1917</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">02</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">U-Boot</mark> tedeschi: attaccano qualsiasi nave</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">03</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">7 maggio 1915</mark>: U-20 affonda il transatlantico <mark class="mg">Lusitania</mark> (1.198 morti, 128 americani) → proteste USA → Germania sospende temporaneamente la guerra sottomarina</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">04</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">31 maggio 1916 — Battaglia dello Jutland</mark>: 250 navi, 9.000 morti → flotta tedesca subisce perdite ma torna in porto, rinuncia definitivamente allo scontro aperto</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">05</span>
+  <span class="btxt" style="color:#f0e8e8;">Supremazia navale britannica confermata.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c0392b;"></div>
+</div>
+<div class="slide" id="slide-33" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="row-cap" style="color:rgba(240,232,232,0.5);">CAP. 3 · La Prima Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c0392b 12%,transparent);border-left:4px solid #c0392b;color:#f0e8e8;">Italia: neutralità e interventismo</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">01</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">Agosto 1914</mark>: Italia neutrale (alleanza difensiva, Austria attacca senza consultare Roma)</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">02</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">Neutralisti</mark>: <mark class="mg">Giolitti</mark> ("parecchio" senza guerra), PSI e CGL (pacifismo operaio), <mark class="mg">Benedetto XV</mark> ("inutile strage")</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">03</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">Interventisti</mark> — 3 correnti: sinistra (vogliono rivoluzione sociale), nazionalisti (grande potenza imperialista), conservatori (Salandra + Sonnino: prestigio monarchia)</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">04</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mg">Mussolini</mark>: espulso dall'Avanti! → fonda <i>Il Popolo d'Italia</i></span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">05</span>
+  <span class="btxt" style="color:#f0e8e8;">D'Annunzio: "radiose giornate di maggio"</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">06</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">26 aprile 1915</mark>: <mark class="mr">Patto di Londra</mark> (segreto, solo il Re lo approva): Italia entra con l'Intesa → ottiene Trentino, Venezia Giulia, Istria, parte Dalmazia</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">07</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">23 maggio 1915</mark>: dichiarazione di guerra all'Austria.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c0392b;"></div>
+</div>
+<div class="slide" id="slide-34" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="row-cap" style="color:rgba(240,232,232,0.5);">CAP. 3 · La Prima Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c0392b 12%,transparent);border-left:4px solid #c0392b;color:#f0e8e8;">1917 — Anno della svolta</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">01</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mp">USA entrano</mark> (<mark class="mb">6 aprile 1917</mark>): U-Boot ripresi + <mark class="mg">Telegramma Zimmermann</mark> (Germania offre Texas/Arizona/New Mexico al Messico) → 2 milioni di soldati freschi</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">02</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">Russia esce</mark>: rivoluzione febbraio 1917 → zar abdica → governo provvisorio Kerensky continua la guerra (errore) → ottobre 1917: <mark class="mg">Lenin</mark> e bolscevichi al potere → <mark class="mb">Brest-Litovsk 3/3/1918</mark>: Russia perde Polonia, Ucraina, Baltici, Finlandia (-25% territorio europeo)</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">03</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mg">Grecia</mark> entra con l'Intesa (estate 1917)</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">04</span>
+  <span class="btxt" style="color:#f0e8e8;">Segni di stanchezza: ammutinamenti francesi, scioperi in Germania e Austria, flotta tedesca ammutina a Kiel</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">05</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">CAPORETTO 24/10/1917</mark>: 7 divisioni tedesche + austria, gas, tattiche infiltrazione → sfondamento → 300.000 prigionieri, 10.000 km² persi → ritirata al Piave</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">06</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mg">Cadorna</mark> → <mark class="mg">Diaz</mark>: fronte più corto, morale migliore.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c0392b;"></div>
+</div>
+<div class="slide" id="slide-35" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="row-cap" style="color:rgba(240,232,232,0.5);">CAP. 3 · La Prima Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c0392b 12%,transparent);border-left:4px solid #c0392b;color:#f0e8e8;">1918 — Fine della guerra</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">01</span>
+  <span class="btxt" style="color:#f0e8e8;">Marzo 1918: ultima offensiva tedesca sul fronte occidentale → bloccata sulla Marna. Austriaci sul Piave: respinti</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">02</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">Agosto 1918 — Amiens</mark>: prima grande sconfitta tedesca. <mark class="mb">24 ottobre 1918 — Vittorio Veneto</mark>: sfondamento austriaco totale</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">03</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">3 novembre 1918</mark>: armistizio con Austria a Villa Giusti</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">04</span>
+  <span class="btxt" style="color:#f0e8e8;">In Germania: marinai si ammutinano a Kiel, rivolte a Berlino, <mark class="mg">Friedrich Ebert</mark> (socialdemocratico) proclama la Repubblica, Guglielmo II fugge in Olanda</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">05</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">11 novembre 1918 ore 11</mark>: armistizio a <mark class="mg">Rethondes</mark> (nel vagone ferroviario). Bilancio: <mark class="mr">8,5 milioni di morti militari + 20 milioni di feriti</mark></span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">06</span>
+  <span class="btxt" style="color:#f0e8e8;">Ridimensionamento definitivo del peso europeo nel mondo.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c0392b;"></div>
+</div>
+<div class="slide" id="slide-36" style="background:#0a0808;color:#f0e8e8;">
+  <div class="si" style="background:#0a0808;color:#f0e8e8;">
+    <div class="row-cap" style="color:rgba(240,232,232,0.5);">CAP. 3 · La Prima Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#c0392b 12%,transparent);border-left:4px solid #c0392b;color:#f0e8e8;">I trattati di pace (1919–1923)</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">01</span>
+  <span class="btxt" style="color:#f0e8e8;">Conferenza di Versailles 18/1/1919: "Quattro Grandi" — <mark class="mg">Wilson</mark> (autodeterminazione + SdN), <mark class="mg">Clemenceau</mark> (punire Germania), <mark class="mg">Lloyd George</mark> (equilibrio), <mark class="mg">Orlando</mark> (rispettare Patto di Londra)</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">02</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mr">Versailles 28/6/1919</mark> contro Germania: <i>territoriale</i> = Alsazia-Lorena alla Francia, corridoio polacco, Danzica città libera, perdita colonie; <i>militare</i> = esercito 100.000 uomini, no marina, no leva; <i>economico</i> = art. 231 "colpevolezza", riparazioni astronomiche</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">03</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">Saint-Germain 1919</mark>: dissoluzione Impero austro-ungarico → Italia ottiene Trentino/Venezia Giulia/Istria ma <mark class="mr">NO Fiume, NO Dalmazia</mark> = <mark class="mr">vittoria mutilata</mark></span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">04</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">Trianon 1920</mark>: Ungheria perde 2/3 territorio</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">05</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">Neuilly 1919</mark>: Bulgaria</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">06</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">Sèvres 1920 → Losanna 1923</mark>: dissoluzione Impero ottomano, Kemal fonda Repubblica di Turchia</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">07</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mb">Tartu/Mosca/Riga 1920-21</mark>: indipendenza Estonia, Lettonia, Lituania, Finlandia</span>
+</div><div class="bullet" style="background:#160d0d;border-color:rgba(192,57,43,0.25);">
+  <span class="bnum" style="color:#c0392b;">08</span>
+  <span class="btxt" style="color:#f0e8e8;"><mark class="mg">Società delle Nazioni</mark>: nata ma USA non aderiscono (Senato boccia) → egemonizzata da GB e Francia → non previene conflitti futuri.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#c0392b;"></div>
+</div>
+<div class="slide" id="slide-37" style="background:#0a0800;color:#fdf4e0;">
+  <div class="si" style="background:#0a0800;color:#fdf4e0;">
+    <div class="chap-eye" style="color:rgba(253,244,224,0.5);">Mini Riassunto · Capitolo 4 di 9</div>
+    <div class="chap-icon">🔥</div>
+    <h2 class="chap-title">Il Dopoguerra e il Fascismo</h2>
+    <div class="chap-line" style="background:#f5a623;"></div>
+    <p class="chap-hint" style="color:rgba(253,244,224,0.5);">Scorri → per ripassare</p>
+    <div class="theme-badge" style="color:rgba(253,244,224,0.5);border-color:rgba(245,166,35,0.25);">Futurismo</div>
+  </div>
+</div>
+<div class="slide" id="slide-38" style="background:#0a0800;color:#fdf4e0;">
+  <div class="si" style="background:#0a0800;color:#fdf4e0;">
+    <div class="row-cap" style="color:rgba(253,244,224,0.5);">CAP. 4 · Il Dopoguerra e il Fascismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#f5a623 12%,transparent);border-left:4px solid #f5a623;color:#fdf4e0;">Crisi del dopoguerra</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">01</span>
+  <span class="btxt" style="color:#fdf4e0;">Inflazione galoppante + disoccupazione + riconversione industria bellica + deficit statale → tensione sociale</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">02</span>
+  <span class="btxt" style="color:#fdf4e0;"><mark class="mr">Biennio Rosso 1919–20</mark>: scioperi, occupazione fabbriche (FIAT Torino), agitazioni contadine</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">03</span>
+  <span class="btxt" style="color:#fdf4e0;">Ceti medi impauriti dal "pericolo rosso"</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">04</span>
+  <span class="btxt" style="color:#fdf4e0;"><mark class="mr">Vittoria mutilata</mark>: Dalmazia non ottenuta a Versailles → risentimento nazionalista.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#f5a623;"></div>
+</div>
+<div class="slide" id="slide-39" style="background:#0a0800;color:#fdf4e0;">
+  <div class="si" style="background:#0a0800;color:#fdf4e0;">
+    <div class="row-cap" style="color:rgba(253,244,224,0.5);">CAP. 4 · Il Dopoguerra e il Fascismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#f5a623 12%,transparent);border-left:4px solid #f5a623;color:#fdf4e0;">D'Annunzio e Fiume</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">01</span>
+  <span class="btxt" style="color:#fdf4e0;"><mark class="mb">Settembre 1919</mark>: <mark class="mg">D'Annunzio</mark> occupa <mark class="mg">Fiume</mark> con i legionari → governo Giolitti firma il <mark class="mb">Trattato di Rapallo 1920</mark> (Fiume città libera) → <mark class="mr">Natale di sangue</mark>: esercito caccia D'Annunzio</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">02</span>
+  <span class="btxt" style="color:#fdf4e0;">Fiume: simbolo del nazionalismo frustrato e laboratorio dello stile fascista (camice nere, "eia eia alalà").</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#f5a623;"></div>
+</div>
+<div class="slide" id="slide-40" style="background:#0a0800;color:#fdf4e0;">
+  <div class="si" style="background:#0a0800;color:#fdf4e0;">
+    <div class="row-cap" style="color:rgba(253,244,224,0.5);">CAP. 4 · Il Dopoguerra e il Fascismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#f5a623 12%,transparent);border-left:4px solid #f5a623;color:#fdf4e0;">Nascita del fascismo</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">01</span>
+  <span class="btxt" style="color:#fdf4e0;"><mark class="mb">23 marzo 1919</mark>: <mark class="mg">Mussolini</mark> fonda i <mark class="mr">Fasci di Combattimento</mark> a Milano (piazza San Sepolcro)</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">02</span>
+  <span class="btxt" style="color:#fdf4e0;"><mark class="mr">Squadrismo</mark>: violenza sistematica contro cooperative, sindacati, camere del lavoro</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">03</span>
+  <span class="btxt" style="color:#fdf4e0;">Finanziati da agrari e industriali</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">04</span>
+  <span class="btxt" style="color:#fdf4e0;">Consenso dei ceti medi, ex-combattenti, nazionalisti.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#f5a623;"></div>
+</div>
+<div class="slide" id="slide-41" style="background:#0a0800;color:#fdf4e0;">
+  <div class="si" style="background:#0a0800;color:#fdf4e0;">
+    <div class="row-cap" style="color:rgba(253,244,224,0.5);">CAP. 4 · Il Dopoguerra e il Fascismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#f5a623 12%,transparent);border-left:4px solid #f5a623;color:#fdf4e0;">Marcia su Roma</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">01</span>
+  <span class="btxt" style="color:#fdf4e0;"><mark class="mb">28 ottobre 1922</mark>: <mark class="mr">Marcia su Roma</mark> → re <mark class="mg">Vittorio Emanuele III</mark> rifiuta di firmare lo stato d'assedio → incarica Mussolini di formare il governo</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">02</span>
+  <span class="btxt" style="color:#fdf4e0;">Mussolini arriva in treno da Milano</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">03</span>
+  <span class="btxt" style="color:#fdf4e0;">Inizio governo di coalizione apparentemente legale.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#f5a623;"></div>
+</div>
+<div class="slide" id="slide-42" style="background:#0a0800;color:#fdf4e0;">
+  <div class="si" style="background:#0a0800;color:#fdf4e0;">
+    <div class="row-cap" style="color:rgba(253,244,224,0.5);">CAP. 4 · Il Dopoguerra e il Fascismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#f5a623 12%,transparent);border-left:4px solid #f5a623;color:#fdf4e0;">Consolidamento del potere</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">01</span>
+  <span class="btxt" style="color:#fdf4e0;"><mark class="mg">Legge Acerbo 1923</mark>: premio di maggioranza ai 2/3 dei seggi per chi supera il 25%</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">02</span>
+  <span class="btxt" style="color:#fdf4e0;">Elezioni <mark class="mb">aprile 1924</mark>: lista fascista 65%</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">03</span>
+  <span class="btxt" style="color:#fdf4e0;"><mark class="mb">10 giugno 1924</mark>: <mark class="mr">delitto Matteotti</mark> (deputato socialista rapito e ucciso) → crisi → secessione aventiniana</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">04</span>
+  <span class="btxt" style="color:#fdf4e0;"><mark class="mb">3 gennaio 1925</mark>: Mussolini rivendica responsabilità → inizio dittatura.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#f5a623;"></div>
+</div>
+<div class="slide" id="slide-43" style="background:#0a0800;color:#fdf4e0;">
+  <div class="si" style="background:#0a0800;color:#fdf4e0;">
+    <div class="row-cap" style="color:rgba(253,244,224,0.5);">CAP. 4 · Il Dopoguerra e il Fascismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#f5a623 12%,transparent);border-left:4px solid #f5a623;color:#fdf4e0;">Leggi fascistissime</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">01</span>
+  <span class="btxt" style="color:#fdf4e0;"><mark class="mb">1925–26</mark>: <mark class="mr">Leggi fascistissime</mark> → abolizione partiti d'opposizione, sindacati liberi, stampa libera</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">02</span>
+  <span class="btxt" style="color:#fdf4e0;"><mark class="mg">OVRA</mark> (polizia segreta)</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">03</span>
+  <span class="btxt" style="color:#fdf4e0;"><mark class="mg">Tribunale Speciale</mark> per i reati politici</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">04</span>
+  <span class="btxt" style="color:#fdf4e0;">Pena di morte reintrodotta</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">05</span>
+  <span class="btxt" style="color:#fdf4e0;">Podestà sostituisce i sindaci eletti</span>
+</div><div class="bullet" style="background:#191200;border-color:rgba(245,166,35,0.25);">
+  <span class="bnum" style="color:#f5a623;">06</span>
+  <span class="btxt" style="color:#fdf4e0;">Italia diventa <mark class="mr">stato a partito unico</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#f5a623;"></div>
+</div>
+<div class="slide" id="slide-44" style="background:#08080a;color:#e8e4e4;">
+  <div class="si" style="background:#08080a;color:#e8e4e4;">
+    <div class="chap-eye" style="color:rgba(232,228,228,0.5);">Mini Riassunto · Capitolo 5 di 9</div>
+    <div class="chap-icon">⚫</div>
+    <h2 class="chap-title">L'Italia Fascista</h2>
+    <div class="chap-line" style="background:#9b2335;"></div>
+    <p class="chap-hint" style="color:rgba(232,228,228,0.5);">Scorri → per ripassare</p>
+    <div class="theme-badge" style="color:rgba(232,228,228,0.5);border-color:rgba(155,35,53,0.25);">Regime</div>
+  </div>
+</div>
+<div class="slide" id="slide-45" style="background:#08080a;color:#e8e4e4;">
+  <div class="si" style="background:#08080a;color:#e8e4e4;">
+    <div class="row-cap" style="color:rgba(232,228,228,0.5);">CAP. 5 · L'Italia Fascista</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#9b2335 12%,transparent);border-left:4px solid #9b2335;color:#e8e4e4;">Fascistizzazione</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">01</span>
+  <span class="btxt" style="color:#e8e4e4;">Dal <mark class="mb">1927</mark>: iscrizione PNF obbligatoria per funzioni pubbliche</span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">02</span>
+  <span class="btxt" style="color:#e8e4e4;">Scuola fascistizzata dall'elementare all'università</span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">03</span>
+  <span class="btxt" style="color:#e8e4e4;"><mark class="mg">Minculpop</mark> controlla cultura, cinema, stampa, radio</span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">04</span>
+  <span class="btxt" style="color:#e8e4e4;">Organizzazioni giovanili: <mark class="mr">Figli della Lupa → Balilla → Avanguardisti → GUF</mark></span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">05</span>
+  <span class="btxt" style="color:#e8e4e4;"><mark class="mb">1939</mark>: Camera dei Deputati abolita → Camera dei Fasci e delle Corporazioni.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#9b2335;"></div>
+</div>
+<div class="slide" id="slide-46" style="background:#08080a;color:#e8e4e4;">
+  <div class="si" style="background:#08080a;color:#e8e4e4;">
+    <div class="row-cap" style="color:rgba(232,228,228,0.5);">CAP. 5 · L'Italia Fascista</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#9b2335 12%,transparent);border-left:4px solid #9b2335;color:#e8e4e4;">Economia corporativa</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">01</span>
+  <span class="btxt" style="color:#e8e4e4;"><mark class="mr">Corporativismo</mark>: 22 corporazioni per settore economico → sindacati fascisti sostituiscono quelli liberi</span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">02</span>
+  <span class="btxt" style="color:#e8e4e4;"><mark class="mg">Battaglia del grano</mark>: autosufficienza cerealicola</span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">03</span>
+  <span class="btxt" style="color:#e8e4e4;"><mark class="mg">Quota 90</mark> (1926): rivalutazione lira → deflazione → export in crisi</span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">04</span>
+  <span class="btxt" style="color:#e8e4e4;"><mark class="mp">IRI 1933</mark>: Stato salva banche e industrie dalla crisi del '29 → industria pubblica</span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">05</span>
+  <span class="btxt" style="color:#e8e4e4;">Autarchia dopo sanzioni del 1935.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#9b2335;"></div>
+</div>
+<div class="slide" id="slide-47" style="background:#08080a;color:#e8e4e4;">
+  <div class="si" style="background:#08080a;color:#e8e4e4;">
+    <div class="row-cap" style="color:rgba(232,228,228,0.5);">CAP. 5 · L'Italia Fascista</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#9b2335 12%,transparent);border-left:4px solid #9b2335;color:#e8e4e4;">Patti Lateranensi</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">01</span>
+  <span class="btxt" style="color:#e8e4e4;"><mark class="mb">11 febbraio 1929</mark>: accordo <mark class="mg">Mussolini–Pio XI</mark> → <mark class="mr">Trattato</mark> (Vaticano stato indipendente 44 ha) + <mark class="mr">Concordato</mark> (cattolicesimo religione di Stato, religione nelle scuole, matrimonio canonico riconosciuto) + <mark class="mr">Convenzione finanziaria</mark> (750 mln lire)</span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">02</span>
+  <span class="btxt" style="color:#e8e4e4;">Consenso di massa al regime.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#9b2335;"></div>
+</div>
+<div class="slide" id="slide-48" style="background:#08080a;color:#e8e4e4;">
+  <div class="si" style="background:#08080a;color:#e8e4e4;">
+    <div class="row-cap" style="color:rgba(232,228,228,0.5);">CAP. 5 · L'Italia Fascista</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#9b2335 12%,transparent);border-left:4px solid #9b2335;color:#e8e4e4;">Politica estera</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">01</span>
+  <span class="btxt" style="color:#e8e4e4;"><mark class="mb">1935–36</mark>: conquista <mark class="mr">Etiopia</mark> (gas, Badoglio) → <mark class="mb">9 maggio 1936</mark>: proclamazione <mark class="mr">Impero</mark></span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">02</span>
+  <span class="btxt" style="color:#e8e4e4;">Sanzioni <mark class="mg">Società delle Nazioni</mark> → isolamento → avvicinamento Germania</span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">03</span>
+  <span class="btxt" style="color:#e8e4e4;"><mark class="mb">1936</mark>: <mark class="mr">Asse Roma-Berlino</mark></span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">04</span>
+  <span class="btxt" style="color:#e8e4e4;"><mark class="mb">1936–39</mark>: intervento in Spagna (Franco)</span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">05</span>
+  <span class="btxt" style="color:#e8e4e4;"><mark class="mb">22 maggio 1939</mark>: <mark class="mr">Patto d'Acciaio</mark> con Germania.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#9b2335;"></div>
+</div>
+<div class="slide" id="slide-49" style="background:#08080a;color:#e8e4e4;">
+  <div class="si" style="background:#08080a;color:#e8e4e4;">
+    <div class="row-cap" style="color:rgba(232,228,228,0.5);">CAP. 5 · L'Italia Fascista</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#9b2335 12%,transparent);border-left:4px solid #9b2335;color:#e8e4e4;">Leggi razziali</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">01</span>
+  <span class="btxt" style="color:#e8e4e4;"><mark class="mb">1938</mark>: <mark class="mr">Leggi razziali</mark> contro gli ebrei (imitazione Germania nazista) → espulsione da scuole, università, professioni, matrimoni misti vietati. 47.000 ebrei italiani colpiti</span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">02</span>
+  <span class="btxt" style="color:#e8e4e4;">Opposizione silenziosa della Chiesa</span>
+</div><div class="bullet" style="background:#111114;border-color:rgba(155,35,53,0.25);">
+  <span class="bnum" style="color:#9b2335;">03</span>
+  <span class="btxt" style="color:#e8e4e4;">Croce firma il <mark class="mg">Manifesto degli intellettuali antifascisti</mark> già dal 1925.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#9b2335;"></div>
+</div>
+<div class="slide" id="slide-50" style="background:#090709;color:#f5e8e8;">
+  <div class="si" style="background:#090709;color:#f5e8e8;">
+    <div class="chap-eye" style="color:rgba(245,232,232,0.5);">Mini Riassunto · Capitolo 6 di 9</div>
+    <div class="chap-icon">🔴</div>
+    <h2 class="chap-title">La Rivoluzione Russa</h2>
+    <div class="chap-line" style="background:#cc1f1f;"></div>
+    <p class="chap-hint" style="color:rgba(245,232,232,0.5);">Scorri → per ripassare</p>
+    <div class="theme-badge" style="color:rgba(245,232,232,0.5);border-color:rgba(204,31,31,0.25);">Costruttivismo</div>
+  </div>
+</div>
+<div class="slide" id="slide-51" style="background:#090709;color:#f5e8e8;">
+  <div class="si" style="background:#090709;color:#f5e8e8;">
+    <div class="row-cap" style="color:rgba(245,232,232,0.5);">CAP. 6 · La Rivoluzione Russa</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#cc1f1f 12%,transparent);border-left:4px solid #cc1f1f;color:#f5e8e8;">Russia pre-rivoluzionaria</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">01</span>
+  <span class="btxt" style="color:#f5e8e8;">Regime autocratico dello zar <mark class="mg">Nicola II</mark></span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">02</span>
+  <span class="btxt" style="color:#f5e8e8;">Enorme massa contadina arretrata</span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">03</span>
+  <span class="btxt" style="color:#f5e8e8;">Industrializzazione rapida ma con forti disuguaglianze</span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">04</span>
+  <span class="btxt" style="color:#f5e8e8;"><mark class="mb">1905</mark>: prima rivoluzione → <mark class="mr">Domenica di Sangue 9 gennaio</mark> (guardie zariste sparano su manifestanti) → concessione della <mark class="mg">Duma</mark> (parlamento)</span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">05</span>
+  <span class="btxt" style="color:#f5e8e8;">Partiti: <mark class="mr">Bolscevichi</mark> (Lenin) e <mark class="mr">Menscevichi</mark>, <mark class="mr">Socialrivoluzionari</mark>, <mark class="mr">Cadetti</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#cc1f1f;"></div>
+</div>
+<div class="slide" id="slide-52" style="background:#090709;color:#f5e8e8;">
+  <div class="si" style="background:#090709;color:#f5e8e8;">
+    <div class="row-cap" style="color:rgba(245,232,232,0.5);">CAP. 6 · La Rivoluzione Russa</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#cc1f1f 12%,transparent);border-left:4px solid #cc1f1f;color:#f5e8e8;">Rivoluzione di Febbraio</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">01</span>
+  <span class="btxt" style="color:#f5e8e8;"><mark class="mb">Marzo 1917</mark> (febbraio cal. russo): rivolta operai e soldati di <mark class="mg">Pietrogrado</mark> → zar abdica → <mark class="mr">Governo Provvisorio</mark> (principe L'vov, poi <mark class="mg">Kerenskij</mark>): liberale, continua la guerra</span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">02</span>
+  <span class="btxt" style="color:#f5e8e8;"><mark class="mr">Doppio potere</mark>: governo provvisorio + <mark class="mg">Soviet di Pietrogrado</mark></span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">03</span>
+  <span class="btxt" style="color:#f5e8e8;">Ordine n.1: soldati obbediscono ai Soviet, non agli ufficiali.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#cc1f1f;"></div>
+</div>
+<div class="slide" id="slide-53" style="background:#090709;color:#f5e8e8;">
+  <div class="si" style="background:#090709;color:#f5e8e8;">
+    <div class="row-cap" style="color:rgba(245,232,232,0.5);">CAP. 6 · La Rivoluzione Russa</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#cc1f1f 12%,transparent);border-left:4px solid #cc1f1f;color:#f5e8e8;">Tesi di Aprile</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">01</span>
+  <span class="btxt" style="color:#f5e8e8;"><mark class="mb">Aprile 1917</mark>: <mark class="mg">Lenin</mark> rientra dalla Svizzera sul <mark class="mr">treno piombato</mark> (autorizzato dai tedeschi)</span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">02</span>
+  <span class="btxt" style="color:#f5e8e8;"><mark class="mr">Tesi di Aprile</mark>: nessun sostegno al governo provvisorio, <mark class="mr">tutto il potere ai Soviet</mark>, uscire subito dalla guerra, espropriare le terre</span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">03</span>
+  <span class="btxt" style="color:#f5e8e8;">Slogan: <mark class="mg">Pace, Terra, Pane</mark></span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">04</span>
+  <span class="btxt" style="color:#f5e8e8;">Luglio 1917: insurrezione prematura fallisce → Lenin in Finlandia.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#cc1f1f;"></div>
+</div>
+<div class="slide" id="slide-54" style="background:#090709;color:#f5e8e8;">
+  <div class="si" style="background:#090709;color:#f5e8e8;">
+    <div class="row-cap" style="color:rgba(245,232,232,0.5);">CAP. 6 · La Rivoluzione Russa</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#cc1f1f 12%,transparent);border-left:4px solid #cc1f1f;color:#f5e8e8;">Rivoluzione d'Ottobre</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">01</span>
+  <span class="btxt" style="color:#f5e8e8;"><mark class="mb">25 ottobre 1917</mark> (7 novembre): <mark class="mg">guardie rosse</mark> e soldati prendono il Palazzo d'Inverno → governo Kerenskij cade</span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">02</span>
+  <span class="btxt" style="color:#f5e8e8;">Governo bolscevico: <mark class="mg">Lenin</mark> (presidente), <mark class="mg">Trotsky</mark> (esteri), <mark class="mg">Stalin</mark> (nazionalità)</span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">03</span>
+  <span class="btxt" style="color:#f5e8e8;"><mark class="mp">Decreto sulla pace</mark> + <mark class="mp">Decreto sulla terra</mark> (espropriazione latifondi).</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#cc1f1f;"></div>
+</div>
+<div class="slide" id="slide-55" style="background:#090709;color:#f5e8e8;">
+  <div class="si" style="background:#090709;color:#f5e8e8;">
+    <div class="row-cap" style="color:rgba(245,232,232,0.5);">CAP. 6 · La Rivoluzione Russa</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#cc1f1f 12%,transparent);border-left:4px solid #cc1f1f;color:#f5e8e8;">Guerra civile e NEP</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">01</span>
+  <span class="btxt" style="color:#f5e8e8;"><mark class="mb">1918–21</mark>: <mark class="mr">Guerra civile</mark> → Armata Rossa (<mark class="mg">Trotsky</mark>) vs Armata Bianca (zaristi + interventisti stranieri)</span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">02</span>
+  <span class="btxt" style="color:#f5e8e8;"><mark class="mr">Comunismo di guerra</mark>: requisizioni forzate → carestia</span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">03</span>
+  <span class="btxt" style="color:#f5e8e8;"><mark class="mb">1921</mark>: <mark class="mp">NEP</mark> (Nuova Politica Economica): piccola proprietà privata reintrodotta → ripresa</span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">04</span>
+  <span class="btxt" style="color:#f5e8e8;"><mark class="mb">30 dicembre 1922</mark>: fondazione <mark class="mr">URSS</mark></span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">05</span>
+  <span class="btxt" style="color:#f5e8e8;"><mark class="mb">21 gennaio 1924</mark>: morte di Lenin.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#cc1f1f;"></div>
+</div>
+<div class="slide" id="slide-56" style="background:#090709;color:#f5e8e8;">
+  <div class="si" style="background:#090709;color:#f5e8e8;">
+    <div class="row-cap" style="color:rgba(245,232,232,0.5);">CAP. 6 · La Rivoluzione Russa</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#cc1f1f 12%,transparent);border-left:4px solid #cc1f1f;color:#f5e8e8;">Lotta per il potere</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">01</span>
+  <span class="btxt" style="color:#f5e8e8;">Dopo Lenin: lotta tra <mark class="mg">Stalin</mark> (segretario del partito, controllo dell'apparato) e <mark class="mg">Trotsky</mark> (teoria della rivoluzione permanente)</span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">02</span>
+  <span class="btxt" style="color:#f5e8e8;">Stalin vince → Trotsky espulso <mark class="mb">1927</mark>, esiliato <mark class="mb">1929</mark>, assassinato in Messico <mark class="mb">1940</mark></span>
+</div><div class="bullet" style="background:#130d13;border-color:rgba(204,31,31,0.25);">
+  <span class="bnum" style="color:#cc1f1f;">03</span>
+  <span class="btxt" style="color:#f5e8e8;">Eliminati anche <mark class="mg">Zinov'ev</mark> e <mark class="mg">Bucharin</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#cc1f1f;"></div>
+</div>
+<div class="slide" id="slide-57" style="background:#07050e;color:#e4ddf5;">
+  <div class="si" style="background:#07050e;color:#e4ddf5;">
+    <div class="chap-eye" style="color:rgba(228,221,245,0.5);">Mini Riassunto · Capitolo 7 di 9</div>
+    <div class="chap-icon">☭</div>
+    <h2 class="chap-title">Lo Stalinismo</h2>
+    <div class="chap-line" style="background:#7c4dbe;"></div>
+    <p class="chap-hint" style="color:rgba(228,221,245,0.5);">Scorri → per ripassare</p>
+    <div class="theme-badge" style="color:rgba(228,221,245,0.5);border-color:rgba(124,77,190,0.22);">Terrore</div>
+  </div>
+</div>
+<div class="slide" id="slide-58" style="background:#07050e;color:#e4ddf5;">
+  <div class="si" style="background:#07050e;color:#e4ddf5;">
+    <div class="row-cap" style="color:rgba(228,221,245,0.5);">CAP. 7 · Lo Stalinismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#7c4dbe 12%,transparent);border-left:4px solid #7c4dbe;color:#e4ddf5;">Fine della NEP</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">01</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mb">1927–28</mark>: Stalin abbandona la NEP → <mark class="mr">economia pianificata e statalizzata</mark></span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">02</span>
+  <span class="btxt" style="color:#e4ddf5;">Obiettivo: trasformare l'URSS da potenza agraria a industriale in tempi record</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">03</span>
+  <span class="btxt" style="color:#e4ddf5;">Opposizione di <mark class="mg">Bucharin</mark> (fautore NEP) repressa</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">04</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mr">Collettivizzazione forzata</mark>: liquidazione dei <mark class="mg">kulaki</mark> (contadini benestanti) come classe.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#7c4dbe;"></div>
+</div>
+<div class="slide" id="slide-59" style="background:#07050e;color:#e4ddf5;">
+  <div class="si" style="background:#07050e;color:#e4ddf5;">
+    <div class="row-cap" style="color:rgba(228,221,245,0.5);">CAP. 7 · Lo Stalinismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#7c4dbe 12%,transparent);border-left:4px solid #7c4dbe;color:#e4ddf5;">Collettivizzazione</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">01</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mb">Dal 1929</mark>: contadini forzati nei <mark class="mr">kolchoz</mark> (cooperative) e <mark class="mr">sovchoz</mark> (aziende statali)</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">02</span>
+  <span class="btxt" style="color:#e4ddf5;">Migliaia di kulaki fucilati, milioni deportati in Siberia</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">03</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mr">Carestia 1932–33</mark>: ~5 milioni di morti (in Ucraina: <mark class="mg">Holodomor</mark>, riconosciuto come genocidio). 1933: quasi tutti i contadini nei kolchoz.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#7c4dbe;"></div>
+</div>
+<div class="slide" id="slide-60" style="background:#07050e;color:#e4ddf5;">
+  <div class="si" style="background:#07050e;color:#e4ddf5;">
+    <div class="row-cap" style="color:rgba(228,221,245,0.5);">CAP. 7 · Lo Stalinismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#7c4dbe 12%,transparent);border-left:4px solid #7c4dbe;color:#e4ddf5;">Piani quinquennali</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">01</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mb">1° piano 1928–32</mark>: industria pesante +50%, operai da 3 a 5 mln</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">02</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mb">2° piano 1933–37</mark>: produzione raddoppia, 10 mln operai</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">03</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mg">Stachanovismo</mark> (<mark class="mg">Aleksej Stachanov</mark>, 102 tonnellate in un turno, 1935): operai modello incentivati</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">04</span>
+  <span class="btxt" style="color:#e4ddf5;">Disciplina rigidissima: ritardi e assenteismo puniti</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">05</span>
+  <span class="btxt" style="color:#e4ddf5;">URSS diventa potenza industriale.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#7c4dbe;"></div>
+</div>
+<div class="slide" id="slide-61" style="background:#07050e;color:#e4ddf5;">
+  <div class="si" style="background:#07050e;color:#e4ddf5;">
+    <div class="row-cap" style="color:rgba(228,221,245,0.5);">CAP. 7 · Lo Stalinismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#7c4dbe 12%,transparent);border-left:4px solid #7c4dbe;color:#e4ddf5;">Grande Terrore</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">01</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mb">1936–38</mark>: <mark class="mr">Processi di Mosca</mark> → <mark class="mg">Zinov'ev, Kamenev, Bucharin</mark> confessano (sotto tortura) crimini inventati → fucilati</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">02</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mr">Purghe dell'Esercito Rosso</mark>: 3 marescialli su 5, 13 comandanti su 15 eliminati</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">03</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mg">NKVD</mark> (polizia segreta, <mark class="mg">Berija</mark>): ~1,5 milioni di morti, milioni nei <mark class="mr">gulag</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#7c4dbe;"></div>
+</div>
+<div class="slide" id="slide-62" style="background:#07050e;color:#e4ddf5;">
+  <div class="si" style="background:#07050e;color:#e4ddf5;">
+    <div class="row-cap" style="color:rgba(228,221,245,0.5);">CAP. 7 · Lo Stalinismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#7c4dbe 12%,transparent);border-left:4px solid #7c4dbe;color:#e4ddf5;">Culto della personalità</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">01</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mr">Stalin = padre dei popoli, genio infallibile</mark></span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">02</span>
+  <span class="btxt" style="color:#e4ddf5;">Riscrittura della storia (foto ritoccate, Trotsky cancellato)</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">03</span>
+  <span class="btxt" style="color:#e4ddf5;">Censura totale</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">04</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mg">Costituzione 1936</mark>: formalmente democratica, in realtà copertura del totalitarismo</span>
+</div><div class="bullet" style="background:#0f0b1a;border-color:rgba(124,77,190,0.22);">
+  <span class="bnum" style="color:#7c4dbe;">05</span>
+  <span class="btxt" style="color:#e4ddf5;"><mark class="mb">23 agosto 1939</mark>: <mark class="mr">Patto Molotov-Ribbentrop</mark> (non aggressione con Germania + protocollo segreto: spartizione Polonia, sfere d'influenza).</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#7c4dbe;"></div>
+</div>
+<div class="slide" id="slide-63" style="background:#080a0c;color:#dde4ee;">
+  <div class="si" style="background:#080a0c;color:#dde4ee;">
+    <div class="chap-eye" style="color:rgba(221,228,238,0.5);">Mini Riassunto · Capitolo 8 di 9</div>
+    <div class="chap-icon">✠</div>
+    <h2 class="chap-title">L'Avvento del Nazismo</h2>
+    <div class="chap-line" style="background:#4a90d9;"></div>
+    <p class="chap-hint" style="color:rgba(221,228,238,0.5);">Scorri → per ripassare</p>
+    <div class="theme-badge" style="color:rgba(221,228,238,0.5);border-color:rgba(74,144,217,0.2);">Bauhaus</div>
+  </div>
+</div>
+<div class="slide" id="slide-64" style="background:#080a0c;color:#dde4ee;">
+  <div class="si" style="background:#080a0c;color:#dde4ee;">
+    <div class="row-cap" style="color:rgba(221,228,238,0.5);">CAP. 8 · L'Avvento del Nazismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#4a90d9 12%,transparent);border-left:4px solid #4a90d9;color:#dde4ee;">Repubblica di Weimar</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">01</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">Febbraio 1919</mark>: fondazione Repubblica di Weimar</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">02</span>
+  <span class="btxt" style="color:#dde4ee;">Fragilità: legata all'umiliazione di <mark class="mr">Versailles</mark> (riparazioni = 1/4 PIL per 50 anni, art. 231 colpa guerra, perdita territori)</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">03</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mr">Iperinflazione 1923</mark>: occupazione della <mark class="mg">Ruhr</mark> (Francia+Belgio) → stampa di moneta → <mark class="mr">1 dollaro = 4.000 miliardi di marchi</mark></span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">04</span>
+  <span class="btxt" style="color:#dde4ee;">Stabilizzazione con <mark class="mg">Stresemann</mark> (<mark class="mb">Piano Dawes 1924</mark>, Locarno 1925).</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#4a90d9;"></div>
+</div>
+<div class="slide" id="slide-65" style="background:#080a0c;color:#dde4ee;">
+  <div class="si" style="background:#080a0c;color:#dde4ee;">
+    <div class="row-cap" style="color:rgba(221,228,238,0.5);">CAP. 8 · L'Avvento del Nazismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#4a90d9 12%,transparent);border-left:4px solid #4a90d9;color:#dde4ee;">Ascesa di Hitler</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">01</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mg">NSDAP</mark> fondato 1919, <mark class="mg">Hitler</mark> dal 1921</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">02</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mr">Putsch di Monaco 9 novembre 1923</mark>: fallisce → prigione → scrive <mark class="mg">Mein Kampf</mark></span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">03</span>
+  <span class="btxt" style="color:#dde4ee;">Ideologia: <mark class="mr">pangermanesimo + antisemitismo razziale + Lebensraum + anticomunismo</mark></span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">04</span>
+  <span class="btxt" style="color:#dde4ee;">Crisi del '29: disoccupazione 6 milioni → esplosione consensi: <mark class="mb">1928</mark> 2,6% → <mark class="mb">luglio 1932</mark> 37,4% (primo partito)</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">05</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">30 gennaio 1933</mark>: <mark class="mg">Hindenburg</mark> nomina Hitler cancelliere.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#4a90d9;"></div>
+</div>
+<div class="slide" id="slide-66" style="background:#080a0c;color:#dde4ee;">
+  <div class="si" style="background:#080a0c;color:#dde4ee;">
+    <div class="row-cap" style="color:rgba(221,228,238,0.5);">CAP. 8 · L'Avvento del Nazismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#4a90d9 12%,transparent);border-left:4px solid #4a90d9;color:#dde4ee;">Instaurazione dittatura</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">01</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">27 febbraio 1933</mark>: <mark class="mr">incendio del Reichstag</mark> → decreto d'emergenza → arresti comunisti</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">02</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">23 marzo 1933</mark>: <mark class="mr">Legge dei pieni poteri</mark> (2/3 Reichstag)</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">03</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mg">Gleichschaltung</mark>: allineamento di tutte le istituzioni</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">04</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">30 giugno 1934</mark>: <mark class="mr">Notte dei lunghi coltelli</mark> (eliminazione SA di Röhm)</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">05</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">Agosto 1934</mark>: morte Hindenburg → Hitler <mark class="mr">Führer e Cancelliere</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#4a90d9;"></div>
+</div>
+<div class="slide" id="slide-67" style="background:#080a0c;color:#dde4ee;">
+  <div class="si" style="background:#080a0c;color:#dde4ee;">
+    <div class="row-cap" style="color:rgba(221,228,238,0.5);">CAP. 8 · L'Avvento del Nazismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#4a90d9 12%,transparent);border-left:4px solid #4a90d9;color:#dde4ee;">Persecuzione degli ebrei</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">01</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">1935</mark>: <mark class="mr">Leggi di Norimberga</mark> → ebrei non-cittadini, matrimoni misti vietati</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">02</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">9 novembre 1938</mark>: <mark class="mr">Kristallnacht</mark> (notte dei cristalli) → 200 sinagoghe bruciate, 30.000 ebrei arrestati</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">03</span>
+  <span class="btxt" style="color:#dde4ee;">Progressiva esclusione dalla vita economica e sociale → emigrazione forzata → poi sterminio.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#4a90d9;"></div>
+</div>
+<div class="slide" id="slide-68" style="background:#080a0c;color:#dde4ee;">
+  <div class="si" style="background:#080a0c;color:#dde4ee;">
+    <div class="row-cap" style="color:rgba(221,228,238,0.5);">CAP. 8 · L'Avvento del Nazismo</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#4a90d9 12%,transparent);border-left:4px solid #4a90d9;color:#dde4ee;">Politica estera verso la guerra</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">01</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">1933</mark>: uscita dalla SDN</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">02</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">1935</mark>: riarmo aperto (violazione Versailles)</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">03</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">1936</mark>: rimilitarizzazione Renania + <mark class="mr">Asse Roma-Berlino</mark></span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">04</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">Marzo 1938</mark>: <mark class="mr">Anschluss Austria</mark></span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">05</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">Settembre 1938</mark>: <mark class="mr">Accordo di Monaco</mark> (<mark class="mg">Chamberlain</mark>, <mark class="mg">appeasement</mark>, Sudeti)</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">06</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">Marzo 1939</mark>: occupazione Boemia-Moravia</span>
+</div><div class="bullet" style="background:#10131a;border-color:rgba(74,144,217,0.2);">
+  <span class="bnum" style="color:#4a90d9;">07</span>
+  <span class="btxt" style="color:#dde4ee;"><mark class="mb">1 settembre 1939</mark>: invasione Polonia → inizio <mark class="mr">Seconda Guerra Mondiale</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#4a90d9;"></div>
+</div>
+<div class="slide" id="slide-69" style="background:#050810;color:#e8ecff;">
+  <div class="si" style="background:#050810;color:#e8ecff;">
+    <div class="chap-eye" style="color:rgba(232,236,255,0.5);">Mini Riassunto · Capitolo 9 di 9</div>
+    <div class="chap-icon">💥</div>
+    <h2 class="chap-title">La Seconda Guerra Mondiale</h2>
+    <div class="chap-line" style="background:#8a1530;"></div>
+    <p class="chap-hint" style="color:rgba(232,236,255,0.5);">Scorri → per ripassare</p>
+    <div class="theme-badge" style="color:rgba(232,236,255,0.5);border-color:rgba(138,21,48,0.28);">War Room</div>
+  </div>
+</div>
+<div class="slide" id="slide-70" style="background:#050810;color:#e8ecff;">
+  <div class="si" style="background:#050810;color:#e8ecff;">
+    <div class="row-cap" style="color:rgba(232,236,255,0.5);">CAP. 9 · La Seconda Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#8a1530 12%,transparent);border-left:4px solid #8a1530;color:#e8ecff;">Le radici — perché scoppiò</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">01</span>
+  <span class="btxt" style="color:#e8ecff;">Versailles 1919 → umiliazione della Germania → ascesa di Hitler</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">02</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mr">Appeasement</mark> anglo-francese: cedere a Hitler per evitare la guerra</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">03</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">Anschluss marzo 1938</mark>: Austria annessa, nessuno reagisce</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">04</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">Monaco 29-30/9/1938</mark>: GB+Francia+Italia cedono i Sudeti a Hitler senza consultare la Cecoslovacchia → Churchill: "disonore e poi guerra"</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">05</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">Marzo 1939</mark>: Hitler occupa tutta la Cecoslovacchia → fine appeasement</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">06</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">23 agosto 1939</mark>: <mark class="mr">Patto Molotov-Ribbentrop</mark>: patto di non aggressione + protocollo segreto: Baltici, Bessarabia, Polonia orientale all'URSS</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">07</span>
+  <span class="btxt" style="color:#e8ecff;">Hitler si garantisce che non ci sarà guerra su 2 fronti.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#8a1530;"></div>
+</div>
+<div class="slide" id="slide-71" style="background:#050810;color:#e8ecff;">
+  <div class="si" style="background:#050810;color:#e8ecff;">
+    <div class="row-cap" style="color:rgba(232,236,255,0.5);">CAP. 9 · La Seconda Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#8a1530 12%,transparent);border-left:4px solid #8a1530;color:#e8ecff;">Scoppio e Blitzkrieg (1939–1940)</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">01</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">1/9/1939</mark>: invasione Polonia (Blitzkrieg: Panzer + Stuka + fanteria motorizzata). <mark class="mb">3/9</mark>: GB e Francia dichiarano guerra</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">02</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">17/9</mark>: URSS occupa Polonia orientale. <mark class="mr">Katyn</mark>: URSS fucila 22.000 ufficiali polacchi. <mark class="mb">Drôle de guerre</mark>: 7 mesi senza combattimenti a ovest</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">03</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">30/11/1939</mark>: URSS attacca Finlandia → resiste 3 mesi → rivela debolezze dell'Armata Rossa (purghe staliniane)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">04</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">9/4/1940</mark>: Danimarca (ore) e Norvegia occupate. <mark class="mb">10/5/1940</mark>: Churchill premier GB</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">05</span>
+  <span class="btxt" style="color:#e8ecff;">Ardenne → Sedan → aggirano la linea Maginot → <mark class="mg">Dunkerque</mark>: 338.000 evacuati</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">06</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">22/6/1940</mark>: <mark class="mr">Armistizio a Rethondes</mark> nello stesso vagone del 1918 (simbolismo hitleriano)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">07</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mg">Pétain</mark>: zona libera fittizia → <mark class="mr">governo di Vichy</mark> (paga 400 mln/giorno alla Germania, deporta ebrei)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">08</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">18/6/1940</mark>: <mark class="mg">De Gaulle</mark> via BBC: "La Francia non ha perso la guerra!" → <mark class="mp">France Libre</mark>.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#8a1530;"></div>
+</div>
+<div class="slide" id="slide-72" style="background:#050810;color:#e8ecff;">
+  <div class="si" style="background:#050810;color:#e8ecff;">
+    <div class="row-cap" style="color:rgba(232,236,255,0.5);">CAP. 9 · La Seconda Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#8a1530 12%,transparent);border-left:4px solid #8a1530;color:#e8ecff;">Battaglia d'Inghilterra e guerra parallela italiana</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">01</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mr">Battaglia d'Inghilterra</mark> (estate-autunno 1940): Luftwaffe bombarda per 3 mesi (57 notti consecutive su Londra, Coventry rasa al suolo, 40.000 civili morti)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">02</span>
+  <span class="btxt" style="color:#e8ecff;">RAF resiste grazie al <mark class="mg">radar</mark> → 1.700 aerei tedeschi persi vs 900 RAF → Hitler rinuncia all'invasione → prima sconfitta</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">03</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">10/6/1940</mark>: <mark class="mr">Italia entra in guerra</mark> impreparata (Mussolini: "qualche migliaio di morti da gettare sul tavolo della pace")</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">04</span>
+  <span class="btxt" style="color:#e8ecff;">Fallimenti su tutti i fronti: Alpi francesi (inefficace), Grecia ottobre 1940 (greci contrattaccano in Albania, Badoglio si dimette), Africa dicembre 1940 (140.000 prigionieri, Rommel in soccorso), Africa Orientale 1941 (persa totalmente).</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#8a1530;"></div>
+</div>
+<div class="slide" id="slide-73" style="background:#050810;color:#e8ecff;">
+  <div class="si" style="background:#050810;color:#e8ecff;">
+    <div class="row-cap" style="color:rgba(232,236,255,0.5);">CAP. 9 · La Seconda Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#8a1530 12%,transparent);border-left:4px solid #8a1530;color:#e8ecff;">1941 — La guerra diventa mondiale</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">01</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">Marzo 1941</mark>: <mark class="mg">Lend-Lease</mark> — USA = "arsenale delle democrazie"</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">02</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">14/8/1941</mark>: <mark class="mg">Carta Atlantica</mark> (Roosevelt+Churchill, 8 punti, ordine democratico post-guerra)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">03</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">22/6/1941</mark>: <mark class="mr">Operazione Barbarossa</mark> — 3 milioni di soldati, 1.600 km di fronte, "guerra di annientamento"</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">04</span>
+  <span class="btxt" style="color:#e8ecff;">Nei primi mesi: avanzata travolgente (600.000 prigionieri in 2 settimane)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">05</span>
+  <span class="btxt" style="color:#e8ecff;">Mosca non cade (inverno russo ferma i tedeschi)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">06</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">7/12/1941</mark>: <mark class="mr">Pearl Harbor</mark> (2.400 morti, flotta del Pacifico distrutta) → USA dichiarano guerra al Giappone → Germania dichiara guerra agli USA (Patto Tripartito)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">07</span>
+  <span class="btxt" style="color:#e8ecff;">Conferenza di Washington dic 1941: patto 26 Nazioni Unite</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">08</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">Primavera 1942</mark>: massima espansione Asse (6 mln km², 350 mln abitanti).</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#8a1530;"></div>
+</div>
+<div class="slide" id="slide-74" style="background:#050810;color:#e8ecff;">
+  <div class="si" style="background:#050810;color:#e8ecff;">
+    <div class="row-cap" style="color:rgba(232,236,255,0.5);">CAP. 9 · La Seconda Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#8a1530 12%,transparent);border-left:4px solid #8a1530;color:#e8ecff;">La Shoah — il progetto di sterminio</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">01</span>
+  <span class="btxt" style="color:#e8ecff;">Ideologia razzista nazista → Leggi di Norimberga 1935 (ebrei senza cittadinanza) → Notte dei Cristalli 9/11/1938 (pogrom organizzato dallo Stato, 30.000 arrestati) → ghetti nei territori occupati → 1941: <mark class="mr">Soluzione Finale</mark> (Himmler/SS)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">02</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">20/1/1942</mark>: <mark class="mr">Conferenza di Wannsee</mark> (convocata da <mark class="mg">Heydrich</mark>): pianificazione burocratica sterminio di 11 milioni di ebrei</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">03</span>
+  <span class="btxt" style="color:#e8ecff;">Campi di sterminio in Polonia occupata: <mark class="mg">Auschwitz-Birkenau, Treblinka, Sobibor, Belzec, Chelmno, Majdanek</mark></span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">04</span>
+  <span class="btxt" style="color:#e8ecff;">Schema: arrivo in treno → selezione sulla banchina → gas → crematori</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">05</span>
+  <span class="btxt" style="color:#e8ecff;">Einsatzgruppen: fucilazioni di massa (~1,5 mln)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">06</span>
+  <span class="btxt" style="color:#e8ecff;">Insurrezione ghetto di Varsavia aprile 1943</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">07</span>
+  <span class="btxt" style="color:#e8ecff;">Totale: <mark class="mr">5-6 milioni di ebrei + 500.000 rom + 200.000 disabili</mark></span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">08</span>
+  <span class="btxt" style="color:#e8ecff;">Liberazione Auschwitz 27/1/1945.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#8a1530;"></div>
+</div>
+<div class="slide" id="slide-75" style="background:#050810;color:#e8ecff;">
+  <div class="si" style="background:#050810;color:#e8ecff;">
+    <div class="row-cap" style="color:rgba(232,236,255,0.5);">CAP. 9 · La Seconda Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#8a1530 12%,transparent);border-left:4px solid #8a1530;color:#e8ecff;">La svolta 1942–1943</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">01</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">Pacifico</mark>: Mar dei Coralli (maggio 1942) + <mark class="mg">Midway</mark> (giugno 1942) → Giappone perde 4 portaerei e i migliori piloti → sulla difensiva</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">02</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mg">Guadalcanal</mark> (febbraio 1943): USA riconquistano l'isola</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">03</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">Ottobre-novembre 1942 — El Alamein</mark>: <mark class="mg">Montgomery</mark> sconfigge <mark class="mg">Rommel</mark> → prima grande vittoria terrestre britannica → resa Asse in Africa (maggio 1943)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">04</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">Agosto 1942 – febbraio 1943 — Stalingrado</mark>: combattimento stanza per stanza</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">05</span>
+  <span class="btxt" style="color:#e8ecff;">Operazione Urano: Zhukov accerchia la 6ª Armata tedesca</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">06</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mg">von Paulus</mark> si arrende con 91.000 sopravvissuti (2/2/1943) → <mark class="mr">punto di non ritorno</mark></span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">07</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">Conferenza di Casablanca</mark> gennaio 1943 (Roosevelt+Churchill): sbarco in Italia + principio di <mark class="mr">resa incondizionata</mark></span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">08</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">Conferenza di Teheran</mark> novembre 1943: Stalin ottiene impegno per il D-Day primavera 1944.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#8a1530;"></div>
+</div>
+<div class="slide" id="slide-76" style="background:#050810;color:#e8ecff;">
+  <div class="si" style="background:#050810;color:#e8ecff;">
+    <div class="row-cap" style="color:rgba(232,236,255,0.5);">CAP. 9 · La Seconda Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#8a1530 12%,transparent);border-left:4px solid #8a1530;color:#e8ecff;">Italia: caduta del fascismo e Resistenza</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">01</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">9-10/7/1943</mark>: sbarco alleati in Sicilia. <mark class="mb">25/7/1943</mark>: Gran Consiglio vota sfiducia → Mussolini arrestato → governo <mark class="mg">Badoglio</mark></span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">02</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">8/9/1943</mark>: <mark class="mr">armistizio</mark> → caos totale: re e Badoglio fuggono a Brindisi, 600.000 militari catturati dai tedeschi, <mark class="mr">strage di Cefalonia</mark> (5.000 soldati italiani fucilati dopo la resa)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">03</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">12/9/1943</mark>: Mussolini liberato da Gran Sasso dalle SS → fonda <mark class="mr">RSI (Repubblica Sociale Italiana) a Salò</mark></span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">04</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mp">CLN</mark> (8/9/1943): 6 partiti antifascisti (PCI, PSIUP, DC, PLI, PdA, DL)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">05</span>
+  <span class="btxt" style="color:#e8ecff;">Resistenza partigiana: <mark class="mg">Brigate Garibaldi</mark> (comunisti), <mark class="mg">GL-Giustizia e Libertà</mark> (azionisti), <mark class="mg">Matteotti</mark> (socialisti), GAP nelle città</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">06</span>
+  <span class="btxt" style="color:#e8ecff;">Rappresaglie: <mark class="mr">Fosse Ardeatine</mark> (335 civili, marzo 1944), <mark class="mr">Marzabotto</mark> (770 civili, settembre 1944). <mark class="mb">16/10/1943</mark>: 1.000 ebrei romani deportati ad Auschwitz</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">07</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">25/4/1945</mark>: insurrezione generale del CLN → liberazione Milano, Torino, Genova. Mussolini fucilato 28/4 a Giulino di Mezzegra.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#8a1530;"></div>
+</div>
+<div class="slide" id="slide-77" style="background:#050810;color:#e8ecff;">
+  <div class="si" style="background:#050810;color:#e8ecff;">
+    <div class="row-cap" style="color:rgba(232,236,255,0.5);">CAP. 9 · La Seconda Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#8a1530 12%,transparent);border-left:4px solid #8a1530;color:#e8ecff;">Fine della guerra in Europa</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">01</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">6/6/1944 — D-Day</mark>: Operazione Overlord, <mark class="mg">Eisenhower</mark>, 150.000 uomini sulle spiagge della Normandia (Omaha: 2.000 morti in poche ore) → sbarco riesce → liberazione Francia (agosto)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">02</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">Ottobre 1944 — Conferenza di Mosca</mark> (Churchill+Stalin): sfere d'influenza balcaniche (Romania+Bulgaria all'URSS, Grecia alla GB)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">03</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">Febbraio 1945 — Conferenza di Yalta</mark> (Roosevelt+Churchill+Stalin): Germania divisa in 4 zone, libere elezioni nei paesi liberati, URSS si impegna a entrare in guerra contro il Giappone</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">04</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">30/4/1945</mark>: Hitler si suicida nel bunker di Berlino</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">05</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">8/5/1945</mark>: resa incondizionata della Germania (<mark class="mg">V-E Day</mark>).</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#8a1530;"></div>
+</div>
+<div class="slide" id="slide-78" style="background:#050810;color:#e8ecff;">
+  <div class="si" style="background:#050810;color:#e8ecff;">
+    <div class="row-cap" style="color:rgba(232,236,255,0.5);">CAP. 9 · La Seconda Guerra Mondiale</div>
+    <div class="row-lbl" style="background:color-mix(in srgb,#8a1530 12%,transparent);border-left:4px solid #8a1530;color:#e8ecff;">Fine della guerra nel Pacifico — la bomba atomica</div>
+    <div class="row-bullets">
+      <div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">01</span>
+  <span class="btxt" style="color:#e8ecff;">Giappone resiste con i <mark class="mg">kamikaze</mark> (aviatori suicidi). <mark class="mg">Truman</mark> usa la bomba del <mark class="mg">Progetto Manhattan</mark></span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">02</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">6/8/1945</mark>: <mark class="mr">Hiroshima</mark> — <i>Enola Gay</i> sgancia "Little Boy": 80.000 morti immediati, fino a 140.000 entro fine anno per radiazioni</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">03</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">9/8/1945</mark>: <mark class="mr">Nagasaki</mark> — "Fat Man": 60.000-80.000 morti. Stesso giorno: URSS dichiara guerra al Giappone (impegno Yalta)</span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">04</span>
+  <span class="btxt" style="color:#e8ecff;"><mark class="mb">2/9/1945</mark>: Giappone firma resa sulla USS Missouri nella baia di Tokyo. Bilancio totale: <mark class="mr">60-70 milioni di morti, 70% civili</mark></span>
+</div><div class="bullet" style="background:#0a0f1c;border-color:rgba(138,21,48,0.28);">
+  <span class="bnum" style="color:#8a1530;">05</span>
+  <span class="btxt" style="color:#e8ecff;">Processi di Norimberga 1945-46. Nascita <mark class="mp">ONU 1945</mark>. Inizio <mark class="mr">Guerra Fredda</mark> USA-URSS.</span>
+</div>
+    </div>
+  </div>
+  <div class="slide-accent-bar" style="background:#8a1530;"></div>
+</div>
+</div>
+
+<button id="mbtn" onclick="toggleMenu()">☰</button>
+<div id="menu">
+  <button class="mcl" onclick="toggleMenu()">✕</button>
+  <div class="mtitle">Capitoli</div>
+  <div class="mlist" id="mlist"></div>
+</div>
+
+<div id="nav">
+  <button class="nb" id="pb" onclick="goTo(cur-1)">←</button>
+  <div class="nc">
+    <div class="npb"><div class="npf" id="pf" style="width:0%"></div></div>
+    <div class="ncnt" id="cnt">1 / 79</div>
+  </div>
+  <button class="nb" id="nb2" onclick="goTo(cur+1)">→</button>
+</div>
+
+<script>
+const deck = document.getElementById('deck');
+const slideEls = document.querySelectorAll('.slide');
+const total = slideEls.length;
+let cur = 0;
+
+const CAP_INFO = [
+  {n:1,c:'#c9a227',th:'Art Nouveau'},
+  {n:2,c:'#3db87a',th:'Liberty'},
+  {n:3,c:'#c0392b',th:'Guerra'},
+  {n:4,c:'#f5a623',th:'Futurismo'},
+  {n:5,c:'#9b2335',th:'Regime'},
+  {n:6,c:'#cc1f1f',th:'Costruttivismo'},
+  {n:7,c:'#7c4dbe',th:'Terrore'},
+  {n:8,c:'#4a90d9',th:'Bauhaus'},
+  {n:9,c:'#8a1530',th:'War Room'},
+];
+const CAP_IDX = [{n:1,idx:1},{n:2,idx:16},{n:3,idx:24},{n:4,idx:37},{n:5,idx:44},{n:6,idx:50},{n:7,idx:57},{n:8,idx:63},{n:9,idx:69}];
+
+// Build menu
+const mlist = document.getElementById('mlist');
+const c0 = document.createElement('div');
+c0.className = 'mitem';
+c0.innerHTML = '<span class="mdot" style="background:#7c6af0"></span><span class="mname">Copertina</span>';
+c0.onclick = () => { goTo(0); toggleMenu(); };
+mlist.appendChild(c0);
+CAP_INFO.forEach((cap, i) => {
+  const info = CAP_IDX.find(x => x.n === cap.n);
+  if (!info) return;
+  const d = document.createElement('div');
+  d.className = 'mitem';
+  d.innerHTML = `<span class="mdot" style="background:${cap.c}"></span><span class="mname">Cap.${cap.n} · ${slideEls[info.idx].querySelector('.chap-title')?.textContent || ''}</span><span class="mth">${cap.th}</span>`;
+  d.onclick = () => { goTo(info.idx); toggleMenu(); };
+  mlist.appendChild(d);
+});
+
+function goTo(idx) {
+  idx = Math.max(0, Math.min(total - 1, idx));
+  cur = idx;
+  // Scroll deck horizontally to the target slide
+  deck.scrollTo({ left: idx * window.innerWidth, behavior: 'smooth' });
+  updateUI();
+}
+
+function updateUI() {
+  document.getElementById('cnt').textContent = (cur + 1) + ' / ' + total;
+  document.getElementById('pf').style.width = ((cur + 1) / total * 100).toFixed(1) + '%';
+  // Get accent color from current slide
+  const bar = slideEls[cur]?.querySelector('.slide-accent-bar');
+  const col = bar ? bar.style.background : '#4f8ef7';
+  document.getElementById('pf').style.background = col || '#4f8ef7';
+  document.getElementById('pb').disabled = cur === 0;
+  document.getElementById('nb2').disabled = cur === total - 1;
+}
+
+// Track scroll position to update cur
+let scrollTimer;
+deck.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    const newCur = Math.round(deck.scrollLeft / window.innerWidth);
+    if (newCur !== cur) {
+      cur = newCur;
+      updateUI();
+    }
+  }, 50);
+}, {passive: true});
+
+function toggleMenu() { document.getElementById('menu').classList.toggle('open'); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(cur + 1);
+  if (e.key === 'ArrowLeft') goTo(cur - 1);
+  if (e.key === 'Escape') document.getElementById('menu').classList.remove('open');
+});
+
+updateUI();
+</script>
+</body>
+</html>
